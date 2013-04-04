@@ -6,6 +6,10 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
 using StocksWithFriends.Models;
+using System.Net;
+using System.IO;
+using System.Text;
+using Newtonsoft.Json.Linq;
 
 namespace StocksWithFriends.Controllers
 {
@@ -18,6 +22,51 @@ namespace StocksWithFriends.Controllers
         public ActionResult LogOn()
         {
             return View();
+        }
+
+        // GET: /Account/FacebookLogin
+
+        public ActionResult FacebookLogin()
+        {
+            return new RedirectResult("https://graph.facebook.com/oauth/authorize?type=web_server&client_id=503245086402321&redirect_uri=http://localhost:5651/Account/Handshake/");
+        }
+
+        //
+        // GET: /Account/Handshake
+
+        public ActionResult Handshake(string code)
+        {
+            string clientId = "503245086402321";
+            string clientSecret = "722f6907051bb08c445b3e1dd405907e";
+            string url = "https://graph.facebook.com/oauth/access_token?client_id={0}&redirect_uri={1}&client_secret={2}&code={3}";
+            string redirectUri = "http://localhost:5651/Account/Handshake/";
+
+            WebRequest tokenRequest = WebRequest.Create(string.Format(url, clientId, redirectUri, clientSecret, code));
+            WebResponse tokenResponse = tokenRequest.GetResponse();
+            Stream tokenStream = tokenResponse.GetResponseStream();
+            Encoding encode = System.Text.Encoding.GetEncoding("utf-8");
+            StreamReader tokenStreamReader = new StreamReader(tokenStream, encode);
+            string accessToken = tokenStreamReader.ReadToEnd().Replace("access_token=", "");
+            tokenStreamReader.Close();
+            tokenResponse.Close();
+
+            Session["FacebookAccessToken"] = accessToken;
+            string userUrl = "https://graph.facebook.com/me?access_token={0}";
+            WebRequest userRequest = WebRequest.Create(string.Format(userUrl, accessToken));
+            WebResponse userResponse = userRequest.GetResponse();
+            Stream userStream = userResponse.GetResponseStream();
+            StreamReader userStreamReader = new System.IO.StreamReader(userStream, Encoding.UTF8);
+            string userString = userStreamReader.ReadToEnd();
+
+            var json = JObject.Parse(userString);
+
+            tokenResponse.Close();
+            userResponse.Close();
+
+            Session["FacebookUserId"] = (string)json["id"];
+            FormsAuthentication.SetAuthCookie((string)json["email"], false);
+
+            return RedirectToAction("Index", "Home");
         }
 
         //
