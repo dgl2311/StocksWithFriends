@@ -34,9 +34,12 @@ namespace StocksWithFriends.Controllers
             string username = jsonUserInfo.Value<string>("username");
             string email = jsonUserInfo.Value<string>("email");
             string locale = jsonUserInfo.Value<string>("locale");
-            string facebook_userID = jsonUserInfo.Value<string>("id");
+            string userId = jsonUserInfo.Value<string>("id");
 
             FormsAuthentication.SetAuthCookie(username, true);
+
+            Session["userId"] = userId;
+
             return RedirectToAction("Index", "Home");
         }
 

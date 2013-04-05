@@ -1,1 +1,18 @@
-﻿Update your status...
+﻿<div id="fb-root"></div>
+
+<script type="text/javascript">
+    function postStatus() {
+        FB.api('/me/feed', 'post', {
+            message: document.getElementById('status-input').value
+        }, function (response) {
+            if (!response || response.error) {
+                alert(response.error.message);
+            } else {
+                alert('Status published to Facebook.');
+            }
+        });
+    }
+</script>
+
+<input type="text" id="status-input" />
+<button onclick="postStatus()">Post</button>
