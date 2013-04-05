@@ -23,7 +23,10 @@ namespace StocksWithFriends.Controllers
 
         public ActionResult Index()
         {
-            GetResponseText("http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22AAPL%22)&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys");
+            string queryURL = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22{0}%22)&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
+            string symbol = "GOOG";
+            Uri url = new Uri(String.Format(queryURL, symbol));
+            GetResponseText(url.ToString());
             return View();
         }
         public void GetResponseText(string url)
@@ -37,12 +40,19 @@ namespace StocksWithFriends.Controllers
             {
                 JObject o = JObject.Parse(sr.ReadToEnd());
                 //string first = (string)o["query"];
-                ViewBag.symbol = (string)o["query"]["results"]["quote"]["Symbol"];
-                ViewBag.companyName = (string)o["query"]["results"]["quote"]["Name"];
-                ViewBag.curPrice = (string)o["query"]["results"]["quote"]["LastTradePriceOnly"];
-                //JavaScriptSerializer js = new JavaScriptSerializer();
-                //var objText = sr.ReadToEnd();
-                //json = (StockJSON)js.Deserialize(objText, typeof(StockJSON));
+                try
+                {
+                    ViewBag.symbol = (string)o["query"]["results"]["quote"]["Symbol"];
+                    ViewBag.companyName = (string)o["query"]["results"]["quote"]["Name"];
+                    ViewBag.curPrice = (string)o["query"]["results"]["quote"]["LastTradePriceOnly"];
+                    //JavaScriptSerializer js = new JavaScriptSerializer();
+                    //var objText = sr.ReadToEnd();
+                    //json = (StockJSON)js.Deserialize(objText, typeof(StockJSON));
+                }
+                catch (Exception e)
+                {
+                    ViewBag.success = false;
+                }
             }
         }
 
