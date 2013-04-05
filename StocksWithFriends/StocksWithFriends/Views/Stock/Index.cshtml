@@ -1,10 +1,14 @@
 ﻿@{
     ViewBag.Title = "Index";
 }
-<h3>Company:</h3> @ViewBag.companyName
-<br />
-<h3>Symbol:</h3> @ViewBag.symbol
-<h3>Current Trading Price:</h3> $@ViewBag.curPrice
-
-
-<h2>Index</h2>
+@if(ViewBag.success)
+{
+    <h3>Company:</h3> @ViewBag.companyName
+    <br />
+    <h3>Symbol:</h3> @ViewBag.symbol
+    <h3>Current Trading Price:</h3> @:$ @ViewBag.curPrice
+} else {
+    <h3>Error: Unable to fetch @ViewBag.symbol</h3>
+    <br />
+    @:Finance server dun goof'd
+}
