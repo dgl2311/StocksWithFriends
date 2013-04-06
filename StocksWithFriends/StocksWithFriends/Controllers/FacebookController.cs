@@ -32,5 +32,13 @@ namespace StocksWithFriends.Controllers
             return PartialView();
         }
 
+        //
+        // GET: /Facebook/UploadPhoto
+
+        public ActionResult UploadPhoto()
+        {
+            return PartialView();
+        }
+
     }
 }
