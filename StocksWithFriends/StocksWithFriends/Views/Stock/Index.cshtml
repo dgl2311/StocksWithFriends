@@ -1,14 +1,55 @@
 ﻿@{
     ViewBag.Title = "Index";
 }
-@if(ViewBag.success)
+
+<script>
+    $(function() {
+        $('#addStock').on('click', function () {
+            console.log("Sending data");
+            $.ajax({
+                dataType: "json",
+                url: 'Stock/AddStock',
+                data: {symbol: $('#symbol').val()}
+            }).done(function (data) {
+                debugger;
+                console.log(data);
+                console.log("result: " + data.Item1);
+                if (data.Item1) {
+                    console.log("adding row");
+                    $('#dataTable').append('<tr><td>' + data.Item2.name + '</td><td>' + data.Item2.symbol + '</td><td>' + data.Item2.price + '</td></tr>');
+                }
+                else { console.log("invalid symbol"); }
+            });
+            console.log("completed?");
+        });
+    });
+</script>
+
+<p>
+ <label for="symbol">Stock Symbol</label>
+ <input type="text" id="symbol" name="symbol">
+ <input type="button" id="addStock" value="Look up">
+</p>
+
+@if (ViewBag.success)
 {
-    <h3>Company:</h3> @ViewBag.companyName
-    <br />
-    <h3>Symbol:</h3> @ViewBag.symbol
-    <h3>Current Trading Price:</h3> @:$ @ViewBag.curPrice
-} else {
-    <h3>Error: Unable to fetch @ViewBag.symbol</h3>
-    <br />
-    @:Finance server dun goof'd
+    <table id="dataTable">
+        <tr>
+            <th>Name</th>
+            <th>Symbol</th>
+            <th>Price</th>
+        </tr>
+        @foreach (StocksWithFriends.Controllers.Stock s in ViewBag.stocks)
+        {
+            <tr>
+                <td>@s.name</td>
+                <td>@s.symbol</td>
+                <td>@s.price</td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <h3>Error: Unable to contact server</h3>
 }

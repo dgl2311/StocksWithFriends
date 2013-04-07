@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using System.Diagnostics;
 
 namespace StocksWithFriends.Controllers
 {
@@ -20,45 +22,106 @@ namespace StocksWithFriends.Controllers
     {
         //
         // GET: /Stock/
-        string symbol;
+        List<string> symbols = new List<string> { "GOOG", "AAPL", "MSFT" };
 
         public ActionResult Index()
         {
-            string queryURL = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22{0}%22)&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
-            symbol = Request.QueryString["symbol"] ?? "GOOG";
-            Uri url = new Uri(String.Format(queryURL, symbol));
-            GetResponseText(url.ToString());
+            if (Request.QueryString["symbol"] != null)
+                symbols.Add(Request.QueryString["symbol"]);
+            GetResponseText();
             return View();
         }
 
-        public void GetResponseText(string url)
+        public void GetResponseText()
         {
+            List<Stock> stocks = new List<Stock>();
+            foreach (string symbol in symbols)
+            {
+                Stock stock = GetStock(MakeStockUrl(symbol));
+                if (stock != null) stocks.Add(stock);
+            }
+
+            if (stocks.Count == 0)
+                ViewBag.success = false;
+
+            ViewBag.stocks = stocks;
+            ViewBag.success = true;
+        }
+
+        private Uri MakeStockUrl(string symbol)
+        {
+            string queryURL = "http://download.finance.yahoo.com/d/quotes.csv?s={0}&f=nsl1&e=.csv";
+            return new Uri(String.Format(queryURL, symbol));
+        }
+
+        private Stock GetStock(Uri callUrl)
+        {
+            Stock output = new Stock();
+
             string responseText = String.Empty;
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(callUrl);
             request.Method = WebRequestMethods.Http.Get;
             request.Accept = "application/json";
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             using (StreamReader sr = new StreamReader(response.GetResponseStream()))
             {
-                JObject o = JObject.Parse(sr.ReadToEnd());
-                //string first = (string)o["query"];
+                string testing = sr.ReadToEnd();
+                string[] stockInfo = Regex.Split(testing, "\r\n");
+                for (int i = 0; i < stockInfo.Length; i++)
+                {
+                    stockInfo[i] = stockInfo[i].Replace("\\", "");
+                    stockInfo[i] = stockInfo[i].Replace("\"", "");
+                }
+                string[] commaSplit = stockInfo[0].Split(',');
+                
                 try
                 {
-                    ViewBag.symbol = (string)o["query"]["results"]["quote"]["Symbol"];
-                    ViewBag.companyName = (string)o["query"]["results"]["quote"]["Name"];
-                    ViewBag.curPrice = (string)o["query"]["results"]["quote"]["LastTradePriceOnly"];
-                    ViewBag.success = true;
-                    //JavaScriptSerializer js = new JavaScriptSerializer();
-                    //var objText = sr.ReadToEnd();
-                    //json = (StockJSON)js.Deserialize(objText, typeof(StockJSON));
+                    output.symbol = commaSplit[1];
+                    output.name = commaSplit[0];
+                    output.price = Double.Parse(commaSplit[2]);
+
+                    if (output.price == 0)
+                        return null;
                 }
                 catch (Exception)
                 {
-                    ViewBag.success = false;
-                    ViewBag.symbol = symbol;
+                    return null;
                 }
             }
+
+            return output;
         }
 
+        public JsonResult AddStock(string symbol)
+        {
+            Stock s = GetStock(MakeStockUrl(symbol));
+            Tuple<bool, Stock> result = new Tuple<bool, Stock>(s != null, s);
+            Debug.WriteLine("Result: " + result.Item1);
+            return Json(result, JsonRequestBehavior.AllowGet);
+           /* if (s == null)
+                return Json(false, JsonRequestBehavior.AllowGet);
+            else
+                return Json(s, JsonRequestBehavior.AllowGet);*/
+        }
+    }
+
+    public class Stock // placeholder for actual database models
+    {
+        public string name, symbol;
+        public double price;
+
+        public Stock() { }
+
+        public Stock(string name, string symbol, double price)
+        {
+            this.name = name;
+            this.symbol = symbol;
+            this.price = price;
+        }
+
+        public string ToString()
+        {
+            return String.Format("[{0}: {1}]", symbol, price);
+        }
     }
 }
