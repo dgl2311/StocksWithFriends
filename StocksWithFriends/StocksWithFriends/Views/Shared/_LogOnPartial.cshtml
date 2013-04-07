@@ -1,11 +1,13 @@
-﻿@if(Request.IsAuthenticated) {
+﻿<div id="fb-root" style="display:inline; margin-left:20px;"></div>
+<input type="text" id="access-token-input" value="@Session["accessToken"]" style="display:none;" />
+
+@if(Request.IsAuthenticated) {
     <text>Welcome <strong>@User.Identity.Name</strong>!
     [ @Html.ActionLink("Log Off", "LogOff", "Account") ]</text>
 }
 else {
-    <fb:login-button perms="publish_stream,read_stream" onlogin="afterFacebookConnect();" 
+    <fb:login-button perms="publish_stream,read_stream" onlogin="afterFacebookConnect();" id="facebook-login-button"
        autologoutlink="false"></fb:login-button>
-    <div id="fb-root" style="display:inline; margin-left:20px;"></div>
 }
 
 <script language="javascript" type="text/javascript">
@@ -16,6 +18,13 @@ else {
             cookie: false,
             xfbml: true
         });
+
+        // Get new access token if the user is already authenticated through Facebook.
+        if (document.getElementById('access-token-input').value === "") {
+            if (document.getElementById('facebook-login-button') === null) {
+                afterFacebookConnect();
+            }
+        }
     }
 
     function afterFacebookConnect() {

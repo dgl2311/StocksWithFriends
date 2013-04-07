@@ -38,6 +38,7 @@ namespace StocksWithFriends.Controllers
 
             FormsAuthentication.SetAuthCookie(username, true);
 
+            Session["accessToken"] = token;
             Session["userId"] = userId;
 
             return RedirectToAction("Index", "Home");
