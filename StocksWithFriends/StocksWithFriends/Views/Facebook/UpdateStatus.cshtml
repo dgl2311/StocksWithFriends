@@ -2,13 +2,16 @@
 
 <script type="text/javascript">
     function postStatus() {
-        FB.api('/me/feed', 'post', {
-            message: document.getElementById('status-input').value
-        }, function (response) {
-            if (!response || response.error) {
-                alert(response.error.message);
-            } else {
-                alert('Status published to Facebook.');
+        $.ajax({
+            type: "POST",
+            url: "Facebook/UpdateAndPostStatus",
+            data: { statusMessage: document.getElementById('status-input').value },
+            dataType: "json",
+            success: function () {
+                console.log("success");
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(xhr.responseText);
             }
         });
     }

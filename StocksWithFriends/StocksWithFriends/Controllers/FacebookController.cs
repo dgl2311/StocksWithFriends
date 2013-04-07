@@ -37,6 +37,38 @@ namespace StocksWithFriends.Controllers
         }
 
         //
+        // POST: /Facebook/UpdateAndPostStatus
+
+        public ActionResult UpdateAndPostStatus(string statusMessage)
+        {
+            string accessToken = (string)Session["accessToken"];
+
+            var fb = new FacebookClient(accessToken);
+            var mediaObject = (FacebookMediaObject)Session["mediaObject"];
+            /*
+            if (mediaObject == null)
+            {
+                dynamic result = fb.Post("me/feed", new
+                {
+                    message = statusMessage
+                });
+            }
+            else
+            {
+                dynamic result = fb.Post("me/photos", new
+                {
+                    message = statusMessage,
+                    source = mediaObject
+                });
+
+                Session["mediaObject"] = null;
+            }
+            */
+
+            return RedirectToAction("Index", "Home", new { message = "Status posted to Facebook" });
+        }
+
+        //
         // GET: /Facebook/UploadPhoto
 
         public ActionResult UploadPhoto()
@@ -47,7 +79,7 @@ namespace StocksWithFriends.Controllers
         //
         // POST: /Facebook/UploadAndPostPhoto
 
-        public string UploadAndPostPhoto(HttpPostedFileBase FileData, FormCollection forms)
+        public void UploadAndPostPhoto(HttpPostedFileBase FileData, FormCollection forms)
         {
             byte[] data;
 
@@ -63,24 +95,13 @@ namespace StocksWithFriends.Controllers
                 data = memoryStream.ToArray();
             }
 
-            string dataString = Convert.ToBase64String(data);
-            string imageString = string.Format("data:image/png;base64,{0}", dataString);
-
             var mediaObject = new FacebookMediaObject
             {
                 ContentType = "image/png",
                 FileName = "image"
             }.SetValue(data);
 
-            string accessToken = (string)Session["accessToken"];
-
-            var fb = new FacebookClient(accessToken);
-            dynamic result = fb.Post("me/photos", new
-            {
-                source = mediaObject
-            });
-
-            return dataString;
+            Session["mediaObject"] = mediaObject;
         }
     }
 }

@@ -8,8 +8,13 @@ namespace StocksWithFriends.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(string message)
         {
+            if (message != null)
+            {
+                ViewBag.Message = "LOL";
+            }
+
             return View();
         }
 
