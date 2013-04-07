@@ -1,0 +1,15 @@
+﻿<link rel="stylesheet" type="text/css" href="/Resources/uploadify/uploadify.css" />
+
+<script type="text/javascript" src="/Resources/uploadify/jquery.uploadify.min.js"></script>
+<script type="text/javascript">
+$(function() {
+    $('#file_upload').uploadify({
+        'swf'      : '/Resources/uploadify/uploadify.swf',
+        'uploader': '/Facebook/UploadAndPostPhoto',
+        'auto': true,
+        'buttonText': 'Add Photo'
+    });
+});
+</script>
+
+<input type="file" name="file_upload" id="file_upload" />

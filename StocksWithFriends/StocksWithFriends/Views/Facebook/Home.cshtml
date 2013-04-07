@@ -1,0 +1,4 @@
+﻿@if(Request.IsAuthenticated) {
+    Html.RenderAction("UploadPhoto", "Facebook");
+    Html.RenderAction("UpdateStatus", "Facebook");
+}

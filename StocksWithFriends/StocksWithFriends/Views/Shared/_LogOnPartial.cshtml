@@ -1,7 +1,51 @@
-﻿@if(Request.IsAuthenticated) {
+﻿<div id="fb-root" style="display:inline; margin-left:20px;"></div>
+<input type="text" id="access-token-input" value="@Session["accessToken"]" style="display:none;" />
+
+@if(Request.IsAuthenticated) {
     <text>Welcome <strong>@User.Identity.Name</strong>!
     [ @Html.ActionLink("Log Off", "LogOff", "Account") ]</text>
 }
 else {
-    @:[ @Html.ActionLink("Login with Facebook", "FacebookLogin", "Account") ]
+    <fb:login-button perms="publish_stream,read_stream" onlogin="afterFacebookConnect();" id="facebook-login-button"
+       autologoutlink="false"></fb:login-button>
 }
+
+<script language="javascript" type="text/javascript">
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId: '503245086402321',
+            status: true,
+            cookie: false,
+            xfbml: true
+        });
+
+        // Get new access token if the user is already authenticated through Facebook.
+        if (document.getElementById('access-token-input').value === "") {
+            if (document.getElementById('facebook-login-button') === null) {
+                afterFacebookConnect();
+            }
+        }
+    }
+
+    function afterFacebookConnect() {
+        FB.getLoginStatus(function(response) {
+            console.log(response.authResponse);
+            if (response.authResponse) {
+                window.location = "../Account/FacebookLogin?token=" + 
+                       response.authResponse.accessToken;
+            } else {
+
+            }
+        });
+    };
+
+    $(document).ready(function() {
+        if (document.getElementById('fb-root') != undefined) {
+            var scriptElement = document.createElement('script');
+            scriptElement.type = 'text/javascript';
+            scriptElement.src = '//connect.facebook.net/en_US/all.js';
+            scriptElement.async = true;
+            document.getElementById('fb-root').appendChild(scriptElement);
+        }
+    });
+</script>

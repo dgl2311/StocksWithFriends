@@ -1,0 +1,21 @@
+﻿<div id="fb-root"></div>
+
+<script type="text/javascript">
+    function postStatus() {
+        $.ajax({
+            type: "POST",
+            url: "Facebook/UpdateAndPostStatus",
+            data: { statusMessage: document.getElementById('status-input').value },
+            dataType: "json",
+            success: function () {
+                console.log("success");
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(xhr.responseText);
+            }
+        });
+    }
+</script>
+
+<input type="text" id="status-input" />
+<button onclick="postStatus()">Post</button>

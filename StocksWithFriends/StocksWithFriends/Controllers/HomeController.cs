@@ -8,9 +8,12 @@ namespace StocksWithFriends.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(string message)
         {
-            ViewBag.Message = "Welcome to ASP.NET MVC!";
+            if (message != null)
+            {
+                ViewBag.Message = "LOL";
+            }
 
             return View();
         }
