@@ -1,0 +1,41 @@
+﻿<div id="friend-search">
+    <script type="text/javascript">
+        var ಠ_ಠ;
+        //Wrapping JS code in a callback is like giving your variables ninja lessons.
+        $(document).ready(function () {
+
+
+            var searchResults = null;
+            function searchUsers() {
+                var searchTerm = $("#search-input").val();
+                var searchURL = 'https://graph.facebook.com/search?q=' + searchTerm + '&type=user&access_token=' + FB.getAccessToken();
+                console.log(searchURL);
+                FB.api(
+                    '/search?q=' + searchTerm + '&type=user&method=POST&access_token='+FB.getAccessToken(),//searchURL,
+                    function (response) {
+                        searchResults = response;
+                        console.log(response);
+                        $(".search-results").html('<div class="result"> <a class="person"> ' + response.data[0].name + '</a> </div>');
+                        console.log("searched");
+                    }
+                );
+            }
+
+            
+
+            //Bind the submit callback to the search button.
+            $("#do-search").click(function () {//.on("click", function () {//
+                searchUsers();
+            });
+
+        });
+    </script>
+
+    <div class="search-bar">
+        <input type="text" id="search-input" />
+        <button id="do-search">Search</button>
+    </div>
+    <div class="search-results">
+
+    </div>
+</div>
