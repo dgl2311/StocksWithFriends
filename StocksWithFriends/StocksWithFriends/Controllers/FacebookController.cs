@@ -47,7 +47,7 @@ namespace StocksWithFriends.Controllers
             string appId = fb.AppId;
 
             var mediaObject = (FacebookMediaObject)Session["mediaObject"];
-            
+
             if (mediaObject == null)
             {
                 dynamic result = fb.Post("me/feed", new
@@ -65,7 +65,7 @@ namespace StocksWithFriends.Controllers
 
                 Session["mediaObject"] = null;
             }
-            
+
 
             return RedirectToAction("Index", "Home", new { message = "Status posted to Facebook" });
         }
@@ -74,13 +74,13 @@ namespace StocksWithFriends.Controllers
             public string name { get; set; }
             public string id { get; set; }
         }
-        
+
         // GET : Facebook/GetFriendId
         public string GetFriendId(string input)
         {
             Dictionary<string, FriendMapping> friendDic = (Dictionary<string, FriendMapping>)Session["dictionary"];
             string friendId = "FALSE";
-            if(friendDic.ContainsKey(input))
+            if (friendDic.ContainsKey(input))
             {
                 friendId = friendDic[input].id;
             }
@@ -91,25 +91,29 @@ namespace StocksWithFriends.Controllers
         {
             Dictionary<string, FriendMapping> friendDic = new Dictionary<string, FriendMapping>();
             string accessToken = (string)Session["accessToken"];
-            var fb = new FacebookClient(accessToken);
-                dynamic myInfo = fb.Get("/me/friends");
-                List<string> names = new List<string>();
-                string nameString = "";
-                foreach (dynamic friend in myInfo.data)
-                {
-                   // Response.Write("Name: " + friend.name + "<br/>Facebook id: " + friend.id + "<br/><br/>");
-                    names.Add(friend.name);
-                    nameString += friend.name + ",";
-                    FriendMapping newFriend = new FriendMapping();
-                    newFriend.name = friend.name;
-                    newFriend.id = friend.id;
-                    friendDic.Add(friend.name, newFriend);
-                }
-                nameString.TrimEnd(',');
-               // return PartialView(new string[]{"whyamidoingthis"});
-                //return RedirectToAction("Index", "Home");
-                Session["dictionary"] = friendDic;
-                return nameString;
+
+            FacebookClient fb;
+            try { fb = new FacebookClient(accessToken); }
+            catch (ArgumentNullException) { return String.Empty; }
+            dynamic myInfo = fb.Get("/me/friends");
+            List<string> names = new List<string>();
+            string nameString = "";
+            foreach (dynamic friend in myInfo.data)
+            {
+                // Response.Write("Name: " + friend.name + "<br/>Facebook id: " + friend.id + "<br/><br/>");
+                names.Add(friend.name);
+                nameString += friend.name + ",";
+                FriendMapping newFriend = new FriendMapping();
+                newFriend.name = friend.name;
+                newFriend.id = friend.id;
+                try { friendDic.Add(friend.name, newFriend); }
+                catch (ArgumentException) { }
+            }
+            nameString.TrimEnd(',');
+            // return PartialView(new string[]{"whyamidoingthis"});
+            //return RedirectToAction("Index", "Home");
+            Session["dictionary"] = friendDic;
+            return nameString;
         }
 
         //
@@ -126,7 +130,7 @@ namespace StocksWithFriends.Controllers
         public ActionResult PostToFriendsWall()
         {
             ViewBag.isReady = false;
-            
+
             return PartialView();
         }
 
