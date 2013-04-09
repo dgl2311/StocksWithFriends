@@ -207,9 +207,10 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Stock\Index.cshtml" />
     <Content Include="Views\Facebook\Home.cshtml" />
-    <Content Include="Views\Facebook\PostToFriendsWall.cshtml" />
     <Content Include="Views\Facebook\UpdateStatus.cshtml" />
     <Content Include="Views\Facebook\UploadPhoto.cshtml" />
+    <Content Include="Views\Facebook\AddFriend.cshtml" />
+    <Content Include="Views\Facebook\FriendRequest.cshtml" />
     <Content Include="Views\Stock\Ticker.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -246,10 +247,4 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target> -->
 </Project>
