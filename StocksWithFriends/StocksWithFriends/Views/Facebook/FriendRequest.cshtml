@@ -1,0 +1,6 @@
+﻿@if(Request.IsAuthenticated) {
+    ViewBag.Title = "Friend Request";
+<h2>Friend Request</h2>
+
+Html.RenderAction("AddFriend", "Facebook");
+}

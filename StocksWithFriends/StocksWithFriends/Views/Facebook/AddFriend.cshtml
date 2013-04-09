@@ -1,4 +1,6 @@
-﻿<div id="friend-search">
+﻿<div id="fb-root" style="display:inline; margin-left:20px;"></div>
+
+<div id="friend-search">
     <script type="text/javascript">
         var ಠ_ಠ;
         //Wrapping JS code in a callback is like giving your variables ninja lessons.
@@ -8,20 +10,28 @@
             var searchResults = null;
             function searchUsers() {
                 var searchTerm = $("#search-input").val();
-                var searchURL = 'https://graph.facebook.com/search?q=' + searchTerm + '&type=user&access_token=' + FB.getAccessToken();
+                var searchURL = 'https://graph.facebook.com/search?q=' + encodeURIComponent(searchTerm) + '&type=user&access_token=' + FB.getAccessToken();
                 console.log(searchURL);
                 FB.api(
-                    '/search?q=' + searchTerm + '&type=user&method=POST&access_token='+FB.getAccessToken(),//searchURL,
+                    searchURL,
                     function (response) {
                         searchResults = response;
-                        console.log(response);
-                        $(".search-results").html('<div class="result"> <a class="person"> ' + response.data[0].name + '</a> </div>');
+                        $(".search-results").html(createResults(response));
                         console.log("searched");
                     }
                 );
             }
 
-            
+            //Construct results box.
+            function createResults(response) {
+                var person = response.data;
+                var result = "";
+                for (index in response.data) {
+                    var friendURL = 'http://www.facebook.com/dialog/friends/?id=' + person[index].id + '&app_id=503245086402321&redirect_uri=' + this.window.location.href;
+                    result = result + '<div class="result"> <a class="person" href="https://www.facebook.com/' + person[index].id + '"> <img src="http://graph.facebook.com/' + person[index].id + '/picture?type=small" /> ' + person[index].name + '</a> <button class="friend-request" onclick="location.href=\'' + friendURL + '\'">Add as Friend</button></div> ';
+                }
+                return result;
+            }
 
             //Bind the submit callback to the search button.
             $("#do-search").click(function () {//.on("click", function () {//

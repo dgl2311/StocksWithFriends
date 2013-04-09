@@ -161,10 +161,16 @@ namespace StocksWithFriends.Controllers
 		
 		//
         // GET: /Facebook/AddFriend
-
         public ActionResult AddFriend()
         {
             return PartialView();
+        }
+
+        //
+        // GET: /Facebook/FriendRequest
+        public ActionResult FriendRequest()
+        {
+            return View();
         }
     }
 }

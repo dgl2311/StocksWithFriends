@@ -454,6 +454,7 @@
     <Content Include="Views\Facebook\UpdateStatus.cshtml" />
     <Content Include="Views\Facebook\UploadPhoto.cshtml" />
     <Content Include="Views\Facebook\AddFriend.cshtml" />
+    <Content Include="Views\Facebook\FriendRequest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
