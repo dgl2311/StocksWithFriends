@@ -1,4 +1,5 @@
 ﻿using Facebook;
+using StocksWithFriends.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -73,6 +74,72 @@ namespace StocksWithFriends.Controllers
         {
             public string name { get; set; }
             public string id { get; set; }
+        }
+
+        //
+        // GET: /Facebook/NewsFeed
+        public ActionResult NewsFeed()
+        {
+
+            List<NewsFeedItem> newsFeedList = new List<NewsFeedItem>();
+
+            string accessToken = (string)Session["accessToken"];
+            if (accessToken != null)
+            {
+                var fb = new FacebookClient(accessToken);
+                dynamic p = (IDictionary<string, object>)fb.Get("me/home?fields=from,to,likes,message,picture");
+
+                dynamic data = p.data;
+                foreach (dynamic post in data)
+                {
+                    NewsFeedItem newsPost = new NewsFeedItem();
+                    newsPost.From = post.from.name;
+                    newsPost.FromID = post.from.id;
+                    newsPost.ID = post.id;
+                    if (post.ContainsKey("to"))
+                    {
+                        dynamic toArray = (IDictionary<string, object>)post.to;
+                        dynamic toData = toArray.data;
+                        foreach (dynamic toEach in toData)
+                        {
+                            newsPost.To = toEach.name;
+                            newsPost.ToID = toEach.id;
+                        }
+                    }
+                    else
+                    {
+                        newsPost.To = null;
+                        newsPost.ToID = null;
+                    }
+                    newsPost.Message = (post.ContainsKey("message")) ? post.message : newsPost.Message = null;
+                    newsPost.Picture = (post.ContainsKey("picture")) ? post.picture : newsPost.Picture = null;
+                    DateTime d = DateTime.Parse(post.created_time);
+                    newsPost.Time = d.ToString();
+                    newsPost.NumLikes = (post.ContainsKey("likes.count")) ? (int)post.likes.count : newsPost.NumLikes = 0;
+                    if (post.ContainsKey("comments"))
+                    {
+                        dynamic comments = (IDictionary<string, object>)post.comments;
+                        dynamic commentData = comments.data;
+                        List<List<String>> commentList = new List<List<String>>();
+                        foreach (dynamic individualComment in commentData)
+                        {
+                            dynamic commentName = individualComment.from.name;
+                            dynamic commentMessage = individualComment.message;
+                            commentList.Add(new List<String> { commentName, commentMessage });
+                        }
+                    }
+                    else
+                    {
+                        newsPost.Comments = null;
+                    }
+                    newsPost.Picture = (post.ContainsKey("picture")) ? post.picture : newsPost.Picture = null;
+                    if (newsPost.Message != null)
+                    {
+                        newsFeedList.Add(newsPost);
+                    }
+                }
+            }
+            return PartialView(newsFeedList);
         }
         
         // GET : Facebook/GetFriendId

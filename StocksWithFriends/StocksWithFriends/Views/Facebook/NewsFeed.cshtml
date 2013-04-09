@@ -1,0 +1,49 @@
+﻿@model IEnumerable<StocksWithFriends.Models.NewsFeedItem>
+
+<div id="fb-root"></div>
+<link href="@Url.Content("~/Content/Feed.css")" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+    function loadNewsfeed() {
+        $.ajax({
+            type: "GET",
+            url: "Facebook/NewsFeed",
+            data: { statusMessage: "Nothing for now" },
+            dataType: "json",
+            success: function () {
+                console.log("success");
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(xhr.responseText);
+            }
+        });
+    }
+</script>
+<div id="newsContainer">
+<h1> News Feed </h1>
+
+<button onclick="loadNewsfeed()">News Feed</button>
+
+    @foreach(var item in Model)
+{
+     <div class="newsItem">
+      <p><b>@item.From</b> @if (item.To != null){
+                            <b>-> @item.To</b>
+                            }
+          </p>
+        
+       
+       @if (item.Picture != null)
+       {
+            <img src="@item.Picture"/>
+       }
+         <br />
+       @item.Message
+         <br />
+       <i style="text-align: right;">@item.Time</i>
+    
+     </div>
+
+}
+
+    </div>

@@ -110,6 +110,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\NewsFeedItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -224,6 +225,7 @@
     <Content Include="Views\Facebook\PostToFriendsWall.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Views\Facebook\NewsFeed.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
