@@ -1,6 +1,12 @@
-﻿@if(Request.IsAuthenticated) {
-    Html.RenderAction("UpdateStatus", "Facebook");
-    Html.RenderAction("UploadPhoto", "Facebook");
-    Html.RenderAction("PostToFriendsWall", "Facebook");
+﻿@if (Request.IsAuthenticated)
+{
+    <div class="ui-widget fb-post-bar" id="fb-post-to-friends-bar">
+        @{Html.RenderAction("UpdateStatus", "Facebook");}
+        <div id="fb-add-photo-button">
+          @{Html.RenderAction("UploadPhoto", "Facebook");}
+        </div>
+    </div>
+    <br />
 
+    Html.RenderAction("PostToFriendsWall", "Facebook");
 }
