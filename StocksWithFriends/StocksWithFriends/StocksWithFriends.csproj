@@ -210,6 +210,7 @@
     <Content Include="Views\Facebook\UpdateStatus.cshtml" />
     <Content Include="Views\Facebook\UploadPhoto.cshtml" />
     <Content Include="Views\Stock\Ticker.cshtml" />
+    <Content Include="Views\Stock\LookUp.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
