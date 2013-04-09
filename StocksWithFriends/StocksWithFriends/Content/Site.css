@@ -4,9 +4,9 @@ to use a different color start by replacing all instances of
 #5c87b2 with your new color.
 ----------------------------------------------------------*/
 body {
-    background-color: #5c87b2;
+    background-color: #A8A9AD;
     font-size: .85em;
-    font-family: "Trebuchet MS", Verdana, Helvetica, Sans-Serif;
+    font-family: "Sintony", "Trebuchet MS", Verdana, Helvetica, Sans-Serif;
     margin: 0;
     padding: 0;
     color: #696969;
@@ -90,14 +90,12 @@ header, #header {
 }
 
     header h1, #header h1 {
-        font-weight: bold;
         padding: 5px 0;
         margin: 0;
         color: #fff;
         border: none;
         line-height: 2em;
         font-size: 32px !important;
-        text-shadow: 1px 1px 2px #111;
     }
 
 #main {
@@ -125,7 +123,6 @@ footer,
 /* TAB MENU   
 ----------------------------------------------------------*/
 ul#menu {
-    border-bottom: 1px #5C87B2 solid;
     padding: 0 0 2px;
     position: relative;
     margin: 0;
@@ -345,3 +342,72 @@ div#title {
 .stock_price {
     color: #008800;
 }
+
+/* Facebook Styles */
+
+#logo {
+    height: 100px;
+}
+
+#fb-update-status-post-bar {
+    width: 560px;
+}
+
+#fb-post-to-friends-bar {
+    width: 560px;
+}
+
+.fb-post-bar {
+    position: relative;
+    height: 30px;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid #666;
+    border-bottom: 1px solid #666;
+}
+
+.fb-label {
+    position: absolute;
+    width: 180px;
+    margin: 0;
+    padding: 0;
+    top: 5px;
+}
+
+.fb-input-text {
+    position: absolute;
+    left: 200px;
+    width: 300px;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    top: 4px;
+}
+
+.fb-button {
+    position: absolute;
+    left: 510px;
+    margin: 0;
+    top: 4px;
+    background-color: white;
+    border: 1px solid #666;
+    color: #666;
+}
+
+.fb-button:hover {
+    border: 1px solid #888;
+    color: #888;
+}
+
+.fb-button:active {
+    border: 1px solid #aaa;
+    color: #aaa;
+}
+
+#fb-add-photo-button {
+    position: absolute;
+    left: 580px;
+}
+
+
+
