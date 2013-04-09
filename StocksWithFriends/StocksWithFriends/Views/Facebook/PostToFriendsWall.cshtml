@@ -1,0 +1,98 @@
+﻿<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+<script type="text/javascript" src="/Resources/uploadify/jquery.uploadify.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/Resources/uploadify/uploadify.css" />
+
+  
+  
+<!--
+<div id="fb-root"></div>
+
+<script type="text/javascript">
+    function postStatuss() {
+        $.ajax({
+            type: "POST",
+            url: "Facebook/PostToFriendsWallWithMsg",
+            data: { statusMessage: document.getElementById('status-input2').value },
+            dataType: "json",
+            success: function () {
+                console.log("success");
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(xhr.responseText);
+            }
+        });
+    }
+</script>
+
+<input type="text" id="status-input2" />
+<button onclick="postStatuss()">post 2</button>
+-->
+
+<div id='fb-root'></div>
+<script src='http://connect.facebook.net/en_US/all.js'></script>
+<script>
+    FB.init({ appId: "503245086402321", status: true, cookie: true });   
+    //346596542081439
+
+    function postToFeed(id) {
+
+        // calling the API ...
+        var obj = {
+            method: 'feed',
+            to: id,
+            redirect_uri: 'http://localhost:5651',
+            link: 'https://developers.facebook.com/docs/reference/dialogs/',
+            picture: 'http://fbrell.com/f8.jpg',
+            name: 'Facebook Dialogs',
+            caption: 'Reference Documentation',
+            description: 'Using Dialogs to interact with users.'
+        };
+
+        function callback(response) {
+            
+        }
+
+        FB.ui(obj, callback);
+    }
+</script>
+<script type="text/javascript">
+   
+    var globalArray = new Array();
+    function FireEvent() {
+        var url = "/Facebook/GetAllFriends";
+        var stringToReverse = "Bob Cravens";
+        $.get(url, { bla: stringToReverse }, function (data) {
+            var array = data.split(',');
+            globalArray = array;            
+            $("#tags").autocomplete({
+                source: globalArray
+            });            
+        });
+    }
+
+    function SendMessage() {
+        var url = "/Facebook/GetFriendId";
+        var friendLookup = $("#tags").val();
+        alert(friendLookup);
+        var friendId = "";
+        $.get(url, { input: friendLookup }, function (data) {
+            friendId = data;
+            postToFeed(friendId);
+        });
+    }
+</script>
+
+<script>
+$(document).ready(function() {
+   FireEvent();
+});
+</script>
+
+<!--<button onclick="FireEvent()">Get all friends</button>-->
+<div class="ui-widget">
+  <label for="tags">Friend: </label>
+  <input id="tags" />
+  <button onclick="SendMessage()">Post</button>
+</div>

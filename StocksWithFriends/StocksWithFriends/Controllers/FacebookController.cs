@@ -44,8 +44,10 @@ namespace StocksWithFriends.Controllers
             string accessToken = (string)Session["accessToken"];
 
             var fb = new FacebookClient(accessToken);
+            string appId = fb.AppId;
+
             var mediaObject = (FacebookMediaObject)Session["mediaObject"];
-            /*
+            
             if (mediaObject == null)
             {
                 dynamic result = fb.Post("me/feed", new
@@ -63,9 +65,51 @@ namespace StocksWithFriends.Controllers
 
                 Session["mediaObject"] = null;
             }
-            */
+            
 
             return RedirectToAction("Index", "Home", new { message = "Status posted to Facebook" });
+        }
+        public class FriendMapping
+        {
+            public string name { get; set; }
+            public string id { get; set; }
+        }
+        
+        // GET : Facebook/GetFriendId
+        public string GetFriendId(string input)
+        {
+            Dictionary<string, FriendMapping> friendDic = (Dictionary<string, FriendMapping>)Session["dictionary"];
+            string friendId = "FALSE";
+            if(friendDic.ContainsKey(input))
+            {
+                friendId = friendDic[input].id;
+            }
+            return friendId;
+        }
+        // POST: /Facebook/getAllFriends
+        public string GetAllFriends(string bla)
+        {
+            Dictionary<string, FriendMapping> friendDic = new Dictionary<string, FriendMapping>();
+            string accessToken = (string)Session["accessToken"];
+            var fb = new FacebookClient(accessToken);
+                dynamic myInfo = fb.Get("/me/friends");
+                List<string> names = new List<string>();
+                string nameString = "";
+                foreach (dynamic friend in myInfo.data)
+                {
+                   // Response.Write("Name: " + friend.name + "<br/>Facebook id: " + friend.id + "<br/><br/>");
+                    names.Add(friend.name);
+                    nameString += friend.name + ",";
+                    FriendMapping newFriend = new FriendMapping();
+                    newFriend.name = friend.name;
+                    newFriend.id = friend.id;
+                    friendDic.Add(friend.name, newFriend);
+                }
+                nameString.TrimEnd(',');
+               // return PartialView(new string[]{"whyamidoingthis"});
+                //return RedirectToAction("Index", "Home");
+                Session["dictionary"] = friendDic;
+                return nameString;
         }
 
         //
@@ -73,6 +117,16 @@ namespace StocksWithFriends.Controllers
 
         public ActionResult UploadPhoto()
         {
+            return PartialView();
+        }
+
+        //
+        // GET: /Facebook/PostToFriendsWallInitial
+
+        public ActionResult PostToFriendsWall()
+        {
+            ViewBag.isReady = false;
+            
             return PartialView();
         }
 
@@ -103,5 +157,6 @@ namespace StocksWithFriends.Controllers
 
             Session["mediaObject"] = mediaObject;
         }
+
     }
 }
