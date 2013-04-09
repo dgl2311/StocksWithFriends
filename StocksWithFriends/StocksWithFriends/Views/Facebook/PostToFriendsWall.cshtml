@@ -75,7 +75,6 @@
     function SendMessage() {
         var url = "/Facebook/GetFriendId";
         var friendLookup = $("#tags").val();
-        alert(friendLookup);
         var friendId = "";
         $.get(url, { input: friendLookup }, function (data) {
             friendId = data;
