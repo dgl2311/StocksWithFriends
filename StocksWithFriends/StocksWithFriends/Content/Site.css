@@ -428,5 +428,29 @@ div#title {
     left: 580px;
 }
 
+div.result {
+    width: 350px;
+    vertical-align: bottom;
+    margin-bottom: 5px;
+    position: relative;
+}
 
+div.result:nth-child(even){
+    background: #FFFFFF;
+}
 
+div.result:nth-child(odd){
+    background: #D8D8D8;
+}
+
+.result a.person {
+    width: 250px;
+    text-overflow: ellipsis;
+}
+
+.result button.friend-request {
+    position: absolute;
+    right:    0;
+    bottom:   0;
+    float: right;
+}

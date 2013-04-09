@@ -227,5 +227,18 @@ namespace StocksWithFriends.Controllers
             Session["mediaObject"] = mediaObject;
         }
 
+        public ActionResult FriendRequest()
+        {
+            return View();
+        }
+
+        //
+        // GET: /Facebook/AddFriend
+
+        public ActionResult AddFriend()
+        {
+            return PartialView();
+        }
+
     }
 }
