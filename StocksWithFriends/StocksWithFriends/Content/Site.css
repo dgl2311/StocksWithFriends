@@ -325,16 +325,35 @@ div#title {
     border: none !important;
 }
 
+#ticker_row a {
+    color: #555555 !important;
+}
+
 #ticker_table {
     border: none;
 }
 
-.ticker_cell {
+.ticker_cell_up {
     border: 1px solid #99CC99;
     border-radius: 20px;
     padding: 3px 6px;
     background-color: #E6FFE6;
 }
+
+.ticker_cell_neutral {
+    border: 1px solid #999999;
+    border-radius: 20px;
+    padding: 3px 6px;
+    background-color: #E6E6E6;
+}
+
+.ticker_cell_down {
+    border: 1px solid #CC9999;
+    border-radius: 20px;
+    padding: 3px 6px;
+    background-color: #FFE6E6;
+}
+
 .stock_symbol {
     color: #666666;
 }

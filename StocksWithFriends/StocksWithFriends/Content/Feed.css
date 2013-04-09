@@ -1,0 +1,13 @@
+.newsItem {
+    border: 2px groove blue;
+    padding: 3px;
+    margin: 5px;
+    width: 400px;
+    
+}
+#newsContainer {
+    margin: 0 auto;
+    position: relative;
+    width: inherit;
+}
+

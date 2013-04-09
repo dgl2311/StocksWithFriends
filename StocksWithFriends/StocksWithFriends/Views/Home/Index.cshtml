@@ -3,8 +3,9 @@
 }
 
 <h2>@ViewBag.Message</h2>
+@{ Html.RenderAction("Ticker", "Stock"); }
 <p>
     @{ Html.RenderAction("Home", "Facebook"); }
 </p>
+    @{ Html.RenderAction("NewsFeed","Facebook");}
 
-@{ Html.RenderAction("Ticker", "Stock"); }
