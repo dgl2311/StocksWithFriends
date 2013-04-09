@@ -32,6 +32,23 @@ namespace StocksWithFriends.Controllers
             return View();
         }
 
+        public ActionResult Ticker()
+        {
+            List<Stock> stocks = new List<Stock>();
+            foreach (string symbol in symbols)
+            {
+                Stock stock = GetStock(MakeStockUrl(symbol));
+                if (stock != null) stocks.Add(stock);
+            }
+
+            if (stocks.Count == 0)
+                ViewBag.success = false;
+
+            ViewBag.stocks = stocks;
+            ViewBag.success = true;
+            return PartialView();
+        }
+
         public void GetResponseText()
         {
             List<Stock> stocks = new List<Stock>();
@@ -54,7 +71,7 @@ namespace StocksWithFriends.Controllers
             return new Uri(String.Format(queryURL, symbol));
         }
 
-        private Stock GetStock(Uri callUrl)
+        public Stock GetStock(Uri callUrl)
         {
             Stock output = new Stock();
 
