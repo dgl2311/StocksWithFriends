@@ -103,7 +103,8 @@ namespace StocksWithFriends.Controllers
                     FriendMapping newFriend = new FriendMapping();
                     newFriend.name = friend.name;
                     newFriend.id = friend.id;
-                    friendDic.Add(friend.name, newFriend);
+                    if(!friendDic.ContainsKey(newFriend.name))
+                        friendDic.Add(friend.name, newFriend);
                 }
                 nameString.TrimEnd(',');
                // return PartialView(new string[]{"whyamidoingthis"});
