@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<link rel='stylesheet' type='text/css' href="../../Content/fullcalendar.css" />
+<script type='text/javascript' src="../../Scripts/fullcalendar.js"></script>
+<script type='text/javascript' src="../../Scripts/jquery-1.9.1.min.js"></script>
+
+<header>
+    <script>
+    $(document).ready(function() {
+
+    // page is now ready, initialize the calendar...
+        
+        $('#calendar').fullCalendar({
+            events: [
+                {
+                    title: 'event1',
+                    start: '2013-04-09'
+                },
+                {
+                    title: 'event2',
+                    start: '2013-04-09',
+                    end: '2014-01-07'
+                },
+                {
+                    title: 'event3',
+                    start: '2010-01-09 12:30:00',
+                    allDay: false // will make the time show
+                }
+            ],
+            dayClick: function (date, allDay, jsEvent, view) {
+               
+
+            }
+        });
+
+    });
+        </script>
+</header>
+<div id='calendar'></div>
