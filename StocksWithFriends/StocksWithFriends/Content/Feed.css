@@ -1,13 +1,42 @@
 .newsItem {
     border: 2px groove blue;
     padding: 3px;
-    margin: 5px;
-    width: 400px;
-    
+    margin: 20px auto;
+    padding: 10px;
+    width: 500px;
+    background-color: white;
+    border: solid #e0e0e0 1px;
 }
 #newsContainer {
-    margin: 0 auto;
+    margin: 0;
     position: relative;
-    width: inherit;
+    display: block;
+    background-color: #eee;
+    border: 1px solid #e0e0e0;
+    width: 540px;
+    padding: 10px;
 }
 
+#newsContainer h1 {
+    margin-left: 10px;
+    color: #333;
+}
+
+#newsContainer button {
+    margin-top: 10px;
+    margin-left: 10px;
+    font-family: "Sintony";
+    background-color: white;
+    border: 1px solid #666;
+    color: #666;
+}
+
+#newsContainer button:hover {
+    border: 1px solid #888;
+    color: #888;
+}
+
+#newsContainer button:active {
+    border: 1px solid #aaa;
+    color: #aaa;
+}
