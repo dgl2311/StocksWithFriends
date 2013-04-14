@@ -4,7 +4,7 @@ to use a different color start by replacing all instances of
 #5c87b2 with your new color.
 ----------------------------------------------------------*/
 body {
-    background-color: #A8A9AD;
+    background-color: #5c87b2;
     font-size: .85em;
     font-family: "Trebuchet MS", Verdana, Helvetica, Sans-Serif;
     margin: 0;
@@ -342,21 +342,7 @@ div#title {
     padding: 3px 6px;
     background-color: #E6FFE6;
 }
-
-.ticker_cell_neutral {
-    border: 1px solid #999999;
-    border-radius: 20px;
-    padding: 3px 6px;
-    background-color: #E6E6E6;
-}
-
-.ticker_cell_down {
-    border: 1px solid #CC9999;
-    border-radius: 20px;
-    padding: 3px 6px;
-    background-color: #FFE6E6;
-}
-
+<<<<<<< HEAD
 
 .ticker_cell_neutral {
     border: 1px solid #999999;
@@ -379,6 +365,51 @@ div#title {
 .stock_price {
     color: #008800;
 }
+
+/* Facebook Styles */
+
+#logo {
+    height: 100px;
+}
+
+#fb-update-status-post-bar {
+    width: 560px;
+}
+
+#fb-post-to-friends-bar {
+    width: 560px;
+}
+
+.fb-post-bar {
+    position: relative;
+    height: 30px;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid #666;
+    border-bottom: 1px solid #666;
+}
+=======
+>>>>>>> 1dc0a916c72709f28abfec78141a45c54c50c973
+
+.ticker_cell_neutral {
+    border: 1px solid #999999;
+    border-radius: 20px;
+    padding: 3px 6px;
+    background-color: #E6E6E6;
+}
+
+.ticker_cell_down {
+    border: 1px solid #CC9999;
+    border-radius: 20px;
+    padding: 3px 6px;
+    background-color: #FFE6E6;
+}
+
+.stock_symbol {
+    color: #666666;
+}
+
+<<<<<<< HEAD
 div.result {
     width: 350px;
     vertical-align: bottom;
@@ -393,13 +424,20 @@ div.result:nth-child(even){
 div.result:nth-child(odd){
     background: #D8D8D8;
 }
+
 .result a.person {
     width: 250px;
     text-overflow: ellipsis;
 }
+
 .result button.friend-request {
     position: absolute;
     right:    0;
     bottom:   0;
     float: right;
 }
+=======
+.stock_price {
+    color: #008800;
+}
+>>>>>>> 1dc0a916c72709f28abfec78141a45c54c50c973

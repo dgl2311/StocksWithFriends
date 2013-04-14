@@ -1,0 +1,60 @@
+<<<<<<< HEAD
+﻿@{
+    ViewBag.Title = "LookUp";
+}
+@if (ViewBag.success)
+{
+    string trendSymbol = "-";
+    if (ViewBag.stock.trend == "up") { trendSymbol = "▲"; }
+    else if (ViewBag.stock.trend == "down") { trendSymbol = "▼"; }
+    
+    <h2>@ViewBag.stock.name Stock Details (@ViewBag.stock.symbol) - $@ViewBag.stock.price @trendSymbol</h2>
+    
+<table id="ticker_table">
+    <tr>
+        <td><h3>Past 5 Days</h3></td>
+        <td><h3>Past 6 Months</h3></td>
+    </tr>
+    <tr>
+        <td><img src="http://chart.finance.yahoo.com/z?s=@(@ViewBag.stock.symbol)&t=5d" /></td>
+        <td><img src="http://chart.finance.yahoo.com/z?s=@(@ViewBag.stock.symbol)&t=6m" /></td>
+    </tr>
+</table>
+    
+
+    
+}
+else
+{
+    <h2>Invalid stock entered: "@ViewBag.symbol"</h2>
+=======
+﻿@{
+    ViewBag.Title = "LookUp";
+}
+@if (ViewBag.success)
+{
+    string trendSymbol = "-";
+    if (ViewBag.stock.trend == "up") { trendSymbol = "▲"; }
+    else if (ViewBag.stock.trend == "down") { trendSymbol = "▼"; }
+    
+    <h2>@ViewBag.stock.name Stock Details (@ViewBag.stock.symbol) - $@ViewBag.stock.price @trendSymbol</h2>
+    
+<table id="ticker_table">
+    <tr>
+        <td><h3>Past 5 Days</h3></td>
+        <td><h3>Past 6 Months</h3></td>
+    </tr>
+    <tr>
+        <td><img src="http://chart.finance.yahoo.com/z?s=@(@ViewBag.stock.symbol)&t=5d" /></td>
+        <td><img src="http://chart.finance.yahoo.com/z?s=@(@ViewBag.stock.symbol)&t=6m" /></td>
+    </tr>
+</table>
+    
+
+    
+}
+else
+{
+    <h2>Invalid stock entered: "@ViewBag.symbol"</h2>
+>>>>>>> 1dc0a916c72709f28abfec78141a45c54c50c973
+}
