@@ -33,7 +33,7 @@
 <div id='fb-root'></div>
 <script src='http://connect.facebook.net/en_US/all.js'></script>
 <script>
-    FB.init({ appId: "503245086402321", status: true, cookie: true });   
+    FB.init({ appId: "@Session["appID"]", status: true, cookie: true });   
     //346596542081439
 
     function postToFeed(id) {
@@ -42,7 +42,7 @@
         var obj = {
             method: 'feed',
             to: id,
-            redirect_uri: 'http://localhost:5651',
+            redirect_uri: this.window.location.href,
             link: 'https://developers.facebook.com/docs/reference/dialogs/',
             picture: 'http://fbrell.com/f8.jpg',
             name: 'Facebook Dialogs',

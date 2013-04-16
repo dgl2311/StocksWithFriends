@@ -27,7 +27,7 @@
                 var person = response.data;
                 var result = "";
                 for (index in response.data) {
-                    var friendURL = 'http://www.facebook.com/dialog/friends/?id=' + person[index].id + '&app_id=503245086402321&redirect_uri=' + this.window.location.href;
+                    var friendURL = 'http://www.facebook.com/dialog/friends/?id=' + person[index].id + '&app_id=@Session["appID"]&redirect_uri=' + this.window.location.href;
                     result = result + '<div class="result"> <a class="person" href="https://www.facebook.com/' + person[index].id + '"> <img src="http://graph.facebook.com/' + person[index].id + '/picture?type=small" /> ' + person[index].name + '</a> <button class="friend-request" onclick="location.href=\'' + friendURL + '\'">Add as Friend</button></div> ';
                 }
                 return result;

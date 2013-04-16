@@ -22,7 +22,7 @@ namespace StocksWithFriends.Controllers
     {
         //
         // GET: /Stock/
-        List<string> symbols = new List<string> { "GOOG", "AAPL", "MSFT" };
+        List<string> symbols = new List<string> { "GOOG", "AAPL", "MSFT", "DIS", "T" };
 
         public ActionResult Index()
         {
