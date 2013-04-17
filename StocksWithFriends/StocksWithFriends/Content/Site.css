@@ -4,9 +4,9 @@ to use a different color start by replacing all instances of
 #5c87b2 with your new color.
 ----------------------------------------------------------*/
 body {
-    background-color: #A8A9AD;
+    background-color: #b9b9b9;
     font-size: .85em;
-    font-family: "Trebuchet MS", Verdana, Helvetica, Sans-Serif;
+    font-family: "Sintony", "Trebuchet MS", Verdana, Helvetica, Sans-Serif;
     margin: 0;
     padding: 0;
     color: #696969;
@@ -82,26 +82,31 @@ page width. Or, you can specify an exact pixel width. */
     margin-right: auto;
 }
 
-header, #header {
-    position: relative;
+#header {
+    position: fixed;
     margin-bottom: 0px;
     color: #000;
+    background-color: #A8A9AD;
     padding: 0;
+    top: 0;
+    left: 0;
+    height: 60px;
+    width: 100%;
+    z-index: 10;
+    box-shadow: 0px 2px 2px #a0a0a0;
 }
 
     header h1, #header h1 {
-        font-weight: bold;
         padding: 5px 0;
         margin: 0;
         color: #fff;
         border: none;
         line-height: 2em;
         font-size: 32px !important;
-        text-shadow: 1px 1px 2px #111;
     }
 
 #main {
-    padding: 30px 30px 15px 30px;
+    padding: 90px 30px 15px 30px;
     background-color: #fff;
     -webkit-border-radius: 4px 0 0 0;
     -moz-border-radius: 4px 0 0 0;
@@ -125,7 +130,6 @@ footer,
 /* TAB MENU   
 ----------------------------------------------------------*/
 ul#menu {
-    border-bottom: 1px #5C87B2 solid;
     padding: 0 0 2px;
     position: relative;
     margin: 0;
@@ -146,24 +150,22 @@ ul#menu {
         }
 
         ul#menu li a {
-            padding: 10px 20px;
+            margin-right: -4px;
+            padding: 21px 40px;
             font-weight: bold;
             text-decoration: none;
-            line-height: 2.8em;
-            background-color: #e8eef4;
-            color: #034af3;
-            -webkit-border-radius: 4px 4px 0 0;
-            -moz-border-radius: 4px 4px 0 0;
-            border-radius: 4px 4px 0 0;
+            line-height: 60px;
+            background-color: #A8A9AD;
+            color: #f0f0f0;
         }
 
             ul#menu li a:hover {
-                background-color: #fff;
+                background-color: #c0c0c0;
                 text-decoration: none;
             }
 
             ul#menu li a:active {
-                background-color: #a6e2a6;
+                background-color: #c0c0c0;
                 text-decoration: none;
             }
 
@@ -243,21 +245,24 @@ table {
 
 nav,
 #menucontainer {
-    margin-top: 40px;
+    display: block;
+    float: left;
 }
 
 div#title {
     display: block;
     float: left;
     text-align: left;
+    margin-left: 5%;
 }
 
 #logindisplay {
     font-size: 1.1em;
     display: block;
     text-align: right;
-    margin: 10px;
     color: White;
+    line-height: 60px;
+    margin-right: 65px;
 }
 
     #logindisplay a:link {
@@ -357,21 +362,6 @@ div#title {
     background-color: #FFE6E6;
 }
 
-
-.ticker_cell_neutral {
-    border: 1px solid #999999;
-    border-radius: 20px;
-    padding: 3px 6px;
-    background-color: #E6E6E6;
-}
-
-.ticker_cell_down {
-    border: 1px solid #CC9999;
-    border-radius: 20px;
-    padding: 3px 6px;
-    background-color: #FFE6E6;
-}
-
 .stock_symbol {
     color: #666666;
 }
@@ -379,27 +369,72 @@ div#title {
 .stock_price {
     color: #008800;
 }
-div.result {
-    width: 350px;
-    vertical-align: bottom;
-    margin-bottom: 5px;
+
+/* Facebook Styles */
+
+#logo {
+    height: 60px;
+}
+
+#fb-update-status-post-bar {
+    width: 560px;
+}
+
+#fb-post-to-friends-bar {
+    width: 560px;
+}
+
+.fb-post-bar {
     position: relative;
+    height: 30px;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid #666;
+    border-bottom: 1px solid #666;
 }
 
-div.result:nth-child(even){
-    background: #FFFFFF;
-}
-
-div.result:nth-child(odd){
-    background: #D8D8D8;
-}
-.result a.person {
-    width: 250px;
-    text-overflow: ellipsis;
-}
-.result button.friend-request {
+.fb-label {
     position: absolute;
-    right:    0;
-    bottom:   0;
-    float: right;
+    width: 180px;
+    margin: 0;
+    padding: 0;
+    top: 5px;
 }
+
+.fb-input-text {
+    position: absolute;
+    left: 200px;
+    width: 300px;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    top: 4px;
+}
+
+.fb-button {
+    position: absolute;
+    left: 510px;
+    margin: 0;
+    top: 4px;
+    background-color: white;
+    border: 1px solid #666;
+    color: #666;
+}
+
+.fb-button:hover {
+    border: 1px solid #888;
+    color: #888;
+}
+
+.fb-button:active {
+    border: 1px solid #aaa;
+    color: #aaa;
+}
+
+#fb-add-photo-button {
+    position: absolute;
+    left: 580px;
+}
+
+
+

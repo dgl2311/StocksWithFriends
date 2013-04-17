@@ -27,7 +27,7 @@ namespace StocksWithFriends.Controllers
                     Debug.WriteLine("Using app ID for " + s + ": " + appID);
                 }
 
-            Session["appID"] = facebookAppIDs["vm549-7"];
+            Session["appID"] = facebookAppIDs["localhost"];
 
             if (message != null)
             {
