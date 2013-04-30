@@ -110,6 +110,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\CalendarEvent.cs" />
     <Compile Include="Models\NewsFeedItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
