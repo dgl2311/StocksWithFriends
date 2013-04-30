@@ -46,12 +46,18 @@
                 events: events,
                 dayClick: function (date, allDay, jsEvent, view) {
                     $("#add-event-form").dialog({
-                        height: 300,
+                        height: 350,
                         width: 350,
                         modal: true,
                         buttons: {
                             "Create Event": function () {
                                 var title = document.getElementById('add-event-name').value;
+                                var startTime = document.getElementById('add-event-start-time').value;
+                                var endDate = document.getElementById('add-event-end-date').value;
+                                var endTime = document.getElementById('add-event-end-time').value;
+                                var allDay = document.getElementById('add-event-all-day').value;
+
+                                console.log(allDay);
 
                                 $('#calendar').fullCalendar('renderEvent', {
                                     title: title,
@@ -89,7 +95,15 @@
 <div id="add-event-form">
     <form>
         <fieldset>
-            <input type="text" name="name" id="add-event-name" placeholder="Event Name" class="text ui-widget-content ui-corner-all" />
+            <br />
+            <input type="text" id="add-event-name" placeholder="Event Name" class="text ui-widget-content ui-corner-all" />
+            <br />
+            <input type="text" id="add-event-start-time" placeholder="Start Time (HH:MM:SS)" class="text ui-widget-content ui-corner-all" />
+            <input type="text" id="add-event-end-date" placeholder="End Date (YYYY-MM-DD)" class="text ui-widget-content ui-corner-all" />
+            <input type="text" id="add-event-end-time" placeholder="End Time (HH:MM:SS)" class="text ui-widget-content ui-corner-all" />
+            <br />
+            <br />
+            <input type="checkbox" id="add-event-all-day" class="text ui-widget-content ui-corner-all" />All Day
         </fieldset>
     </form>
 </div>
