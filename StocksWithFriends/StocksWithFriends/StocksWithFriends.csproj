@@ -45,6 +45,9 @@
     <Reference Include="Facebook">
       <HintPath>..\packages\Facebook.6.4.0\lib\net40-client\Facebook.dll</HintPath>
     </Reference>
+    <Reference Include="Fleck">
+      <HintPath>..\packages\Fleck.0.9.6.19\lib\net40\Fleck.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
@@ -103,6 +106,7 @@
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CalenderController.cs" />
+    <Compile Include="Controllers\ChatController.cs" />
     <Compile Include="Controllers\FacebookController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\StockController.cs" />
@@ -111,6 +115,7 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\CalendarEvent.cs" />
+    <Compile Include="Models\ChatMessage.cs" />
     <Compile Include="Models\NewsFeedItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -244,6 +249,8 @@
     </Content>
     <Content Include="Views\Facebook\NewsFeed.cshtml" />
     <Content Include="Views\Stock\LookUp.cshtml" />
+    <Content Include="Views\Chat\Chat.cshtml" />
+    <Content Include="Views\Chat\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
