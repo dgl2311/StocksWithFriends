@@ -10,6 +10,13 @@ namespace StocksWithFriends.Controllers
 {
     public class CalenderController : Controller
     {
+        DBEntities _db;
+
+        public CalenderController()
+        {
+            _db = new DBEntities();
+        }
+
         //
         // GET: /Calender/
 
@@ -18,45 +25,67 @@ namespace StocksWithFriends.Controllers
             return View();
         }
 
-        public ActionResult AddEvent(string title, string start, string end, Boolean allDay)
+        public ActionResult AddEvent(string name, string description, int startYear, int startMonth, int startDay,
+            int startHour, int startMinute, int startSecond, int endYear, int endMonth, int endDay, int endHour,
+            int endMinute, int endSecond)
         {
             CalendarEvent calendarEvent = new CalendarEvent();
-            calendarEvent.Title = title;
-            calendarEvent.Start = start;
-            calendarEvent.End = end;
-            calendarEvent.AllDay = allDay;
+            calendarEvent.event_name = name;
+            calendarEvent.event_description = description;
+            calendarEvent.start_timestamp = new System.DateTime(startYear, startMonth, startDay, startHour, startMinute, startSecond);
+            calendarEvent.end_timestamp = new System.DateTime(endYear, endMonth, endDay, endHour, endMinute, endSecond);
+            calendarEvent.user_id = 0;
+            calendarEvent.id = 0;
 
-            // TODO: Save to SQL
+            if (_db.CalendarEvents.Count() > 0)
+            {
+                calendarEvent.id = _db.CalendarEvents.ToList().Last().id + 1;
+            }
+
+            _db.CalendarEvents.Add(calendarEvent);
+            _db.SaveChanges();
 
             return RedirectToAction("Index", "Calender");
         }
 
         public JsonResult GetEvents()
         {
-            // TODO: Read from SQL
-            List<CalendarEvent> events = new List<CalendarEvent>();
+            List<JsonCalendarEvent> jsonEvents = new List<JsonCalendarEvent>();
 
-            CalendarEvent event1 = new CalendarEvent();
-            event1.Title = "event1";
-            event1.Start = "2013-04-09";
-            event1.AllDay = true;
-            events.Add(event1);
+            foreach (CalendarEvent e in _db.CalendarEvents.ToList())
+            {
+                jsonEvents.Add(new JsonCalendarEvent(e));
+            }
 
-            CalendarEvent event2 = new CalendarEvent();
-            event2.Title = "event2";
-            event2.Start = "2013-04-09";
-            event2.End = "2014-01-07";
-            event2.AllDay = true;
-            events.Add(event2);
-
-            CalendarEvent event3 = new CalendarEvent();
-            event3.Title = "event3";
-            event3.Start = "2013-04-09 12:30:00";
-            event3.AllDay = false;
-            events.Add(event3);
-
-            return Json(events, JsonRequestBehavior.AllowGet);
+            return Json(jsonEvents, JsonRequestBehavior.AllowGet);
         }
 
+    }
+
+    class JsonCalendarEvent
+    {
+        public JsonCalendarEvent(CalendarEvent calendarEvent)
+        {
+            id = calendarEvent.id;
+            user_id = calendarEvent.user_id;
+            event_name = calendarEvent.event_name;
+            event_description = calendarEvent.event_description;
+            start_string = calendarEvent.start_timestamp.Value.ToString("yyyy-MM-dd HH:mm:00");
+            end_string = calendarEvent.end_timestamp.Value.ToString("yyyy-MM-dd HH:mm:00");
+
+            System.DateTime eventStart = calendarEvent.start_timestamp.Value;
+            System.DateTime eventEnd = calendarEvent.end_timestamp.Value;
+            Boolean start = (eventStart.Hour == 0 && eventStart.Minute == 0);
+            Boolean end = (eventEnd.Hour == 23 && eventEnd.Minute == 59);
+            all_day = (start && end);
+        }
+
+        public int id { get; set; }
+        public int user_id { get; set; }
+        public string event_name { get; set; }
+        public string event_description { get; set; }
+        public string start_string { get; set; }
+        public string end_string { get; set; }
+        public Boolean all_day { get; set; }
     }
 }

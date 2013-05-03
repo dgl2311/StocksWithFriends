@@ -22,10 +22,10 @@
 
                     for (var i = 0; i < data.length; i++) {
                         events.push({
-                            title: data[i].Title,
-                            start: data[i].Start,
-                            end: data[i].End,
-                            allDay: data[i].AllDay
+                            title: data[i].event_name,
+                            start: data[i].start_string,
+                            end: data[i].end_string,
+                            allDay: data[i].all_day
                         });
                     }
 
@@ -45,33 +45,89 @@
             $('#calendar').fullCalendar({
                 events: events,
                 dayClick: function (date, allDay, jsEvent, view) {
+                    // Set default date to date clicked.
+                    var startDate = $.datepicker.formatDate('yy-mm-dd', date);
+                    document.getElementById('add-event-start-date').value = startDate;
+
                     $("#add-event-form").dialog({
-                        height: 350,
-                        width: 350,
+                        height: 480,
+                        width: 400,
                         modal: true,
+                        title: "Create a New Event",
                         buttons: {
                             "Create Event": function () {
-                                var title = document.getElementById('add-event-name').value;
-                                var startTime = document.getElementById('add-event-start-time').value;
-                                var endDate = document.getElementById('add-event-end-date').value;
-                                var endTime = document.getElementById('add-event-end-time').value;
-                                var allDay = document.getElementById('add-event-all-day').value;
+                                var name = document.getElementById('add-event-name').value;
+                                var description = document.getElementById('add-event-description').value;
 
-                                console.log(allDay);
+                                var startYear = date.getFullYear();
+                                var startMonth = date.getMonth() + 1;
+                                var startDay = date.getDate();
+                                var startHour = 12;
+                                var startMinute = 0;
 
-                                $('#calendar').fullCalendar('renderEvent', {
-                                    title: title,
-                                    start: date
-                                });
+                                var endYear = startYear;
+                                var endMonth = startMonth;
+                                var endDay = startDay;
+                                var endHour = startHour + 1;
+                                var endMinute = startMinute;
 
-                                $(this).dialog('close');
-                                document.getElementById('add-event-name').value = "";
+                                var endDateString = document.getElementById('add-event-end-date').value;
+                                if (endDateString.length > 0) {
+                                    endYear = parseInt(endDateString.split('-')[0]);
+                                    endMonth = parseInt(endDateString.split('-')[1]);
+                                    endDay = parseInt(endDateString.split('-')[2]);
+                                }
+                                
+                                var startTimeString = document.getElementById('add-event-start-time').value;
+                                if (startTimeString.length > 0) {
+                                    startHour = parseInt(startTimeString.split(':')[0]);
+                                    startMinute = parseInt(startTimeString.split(':')[1]);
+                                }
+
+                                var endTimeString = document.getElementById('add-event-end-time').value;
+                                if (endTimeString.length > 0) {
+                                    endHour = parseInt(endTimeString.split(':')[0]);
+                                    endMinute = parseInt(endTimeString.split(':')[1]);
+                                }
+
+                                if (document.getElementById('add-event-all-day').checked === true) {
+                                    startHour = 0;
+                                    startMinute = 0;
+                                    endHour = 23;
+                                    endMinute = 59;
+                                }
+
+                                var startString = "";
+                                startString += (startYear.toString() + "-");
+                                startString += (startMonth < 10 ? "0" : "") + startMonth.toString() + "-";
+                                startString += (startDay < 10 ? "0" : "") + startDay.toString() + " ";
+                                startString += (startHour < 10 ? "0" : "") + startHour.toString() + ":";
+                                startString += (startMinute < 10 ? "0" : "") + startMinute.toString() + ":00";
+                                
+                                var endString = "";
+                                endString += (endYear.toString() + "-");
+                                endString += (endMonth < 10 ? "0" : "") + endMonth.toString() + "-";
+                                endString += (endDay < 10 ? "0" : "") + endDay.toString() + " ";
+                                endString += (endHour < 10 ? "0" : "") + endHour.toString() + ":";
+                                endString += (endMinute < 10 ? "0" : "") + endMinute.toString() + ":00";
 
                                 $.ajax({
                                     url: 'Calender/AddEvent',
                                     data: {
-                                        title: title,
-                                        startDate: date
+                                        name: name,
+                                        description: description,
+                                        startYear: startYear,
+                                        startMonth: startMonth,
+                                        startDay: startDay,
+                                        startHour: startHour,
+                                        startMinute: startMinute,
+                                        startSecond: 0,
+                                        endYear: endYear,
+                                        endMonth: endMonth,
+                                        endDay: endDay,
+                                        endHour: endHour,
+                                        endMinute: endMinute,
+                                        endSecond: 0
                                     },
                                     success: function () {
 
@@ -80,6 +136,24 @@
 
                                     }
                                 });
+
+                                $('#calendar').fullCalendar('renderEvent', {
+                                    title: name,
+                                    start: startString,
+                                    end: endString,
+                                    allDay: allDay,
+                                    description: description
+                                });
+
+                                $(this).dialog('close');
+
+                                document.getElementById('add-event-name').value = "";
+                                document.getElementById('add-event-start-date').value = "";
+                                document.getElementById('add-event-start-time').value = "";
+                                document.getElementById('add-event-end-date').value = "";
+                                document.getElementById('add-event-end-time').value = "";
+                                document.getElementById('add-event-all-day').checked = false;
+                                document.getElementById('add-event-description').value = "";
                             },
                             "Cancel": function () {
                                 $(this).dialog("close");
@@ -98,12 +172,16 @@
             <br />
             <input type="text" id="add-event-name" placeholder="Event Name" class="text ui-widget-content ui-corner-all" />
             <br />
-            <input type="text" id="add-event-start-time" placeholder="Start Time (HH:MM:SS)" class="text ui-widget-content ui-corner-all" />
+            <input type="text" id="add-event-start-date" placeholder="Start Date (YYYY-MM-DD)" class="text ui-widget-content ui-corner-all" />
+            <input type="text" id="add-event-start-time" placeholder="Start Time (HH:MM)" class="text ui-widget-content ui-corner-all" />
             <input type="text" id="add-event-end-date" placeholder="End Date (YYYY-MM-DD)" class="text ui-widget-content ui-corner-all" />
-            <input type="text" id="add-event-end-time" placeholder="End Time (HH:MM:SS)" class="text ui-widget-content ui-corner-all" />
+            <input type="text" id="add-event-end-time" placeholder="End Time (HH:MM)" class="text ui-widget-content ui-corner-all" />
             <br />
             <br />
             <input type="checkbox" id="add-event-all-day" class="text ui-widget-content ui-corner-all" />All Day
+            <br />
+            <br />
+            <textarea id="add-event-description" cols="30" placeholder="Event Description" class="ui-widget-content ui-corner-all"></textarea>
         </fieldset>
     </form>
 </div>
