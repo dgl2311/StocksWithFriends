@@ -56,6 +56,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -114,8 +116,41 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Models\CalendarEvent.cs" />
+    <Compile Include="Models\CalendarEvent.cs">
+      <DependentUpon>DBEntityItem.tt</DependentUpon>
     <Compile Include="Models\ChatMessage.cs" />
+    </Compile>
+    <Compile Include="Models\DBEntityItem.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBEntityItem.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DBEntityItem.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBEntityItem.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DBEntityItem.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBEntityItem.edmx</DependentUpon>
+    </Compile>
+
+    <Compile Include="Models\DBEntityItem.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBEntityItem.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DBEntityItem.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBEntityItem.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DBEntityItem.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBEntityItem.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\NewsFeedItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -178,6 +213,23 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Global.asax" />
+    <EntityDeploy Include="Models\DBEntityItem.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DBEntityItem.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\DBEntityItem.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DBEntityItem.edmx</DependentUpon>
+      <LastGenOutput>DBEntityItem.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\DBEntityItem.edmx.diagram">
+      <DependentUpon>DBEntityItem.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\DBEntityItem.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DBEntityItem.edmx</DependentUpon>
+      <LastGenOutput>DBEntityItem.cs</LastGenOutput>
+    </Content>
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\Profile.pubxml" />
     <Content Include="Resources\uploadify\check-exists.php" />
@@ -205,6 +257,7 @@
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />
+    <Content Include="SQL Scripts\CreateDatabase.sql" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -257,6 +310,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
