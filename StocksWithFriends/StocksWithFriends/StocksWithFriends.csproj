@@ -45,7 +45,8 @@
     <Reference Include="Facebook">
       <HintPath>..\packages\Facebook.6.4.0\lib\net40-client\Facebook.dll</HintPath>
     </Reference>
-    <Reference Include="Fleck">
+    <Reference Include="Fleck, Version=0.9.6.19, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Fleck.0.9.6.19\lib\net40\Fleck.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -118,24 +119,7 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\CalendarEvent.cs">
       <DependentUpon>DBEntityItem.tt</DependentUpon>
-    <Compile Include="Models\ChatMessage.cs" />
     </Compile>
-    <Compile Include="Models\DBEntityItem.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBEntityItem.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\DBEntityItem.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBEntityItem.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\DBEntityItem.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBEntityItem.edmx</DependentUpon>
-    </Compile>
-
     <Compile Include="Models\DBEntityItem.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -303,7 +287,6 @@
     <Content Include="Views\Facebook\NewsFeed.cshtml" />
     <Content Include="Views\Stock\LookUp.cshtml" />
     <Content Include="Views\Chat\Chat.cshtml" />
-    <Content Include="Views\Chat\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

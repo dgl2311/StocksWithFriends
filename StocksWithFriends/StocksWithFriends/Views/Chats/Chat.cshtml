@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "Chat";
+}
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+<script type="text/javascript" src="/Resources/uploadify/jquery.uploadify.min.js"></script>
+<h2>Chat</h2>
+
+<label for="name" >Name</label>
+<input id="name" />
+<br />
+<label for="msg" >Message</label>
+<input id="msg"  />
+<br />
+<button id="btn" >Post</button>
+<div id="message_area">
+
+</div>
+
+<script>
+    function displayMessage(msg) {
+        $('#message_area').append('<br />'+msg);
+         }
+      
+     var WebSocket = WebSocket || MozWebSocket;
+     var myWebSocket = new WebSocket("ws://localhost:8181");
+     myWebSocket.onopen = function (evt) {
+             //$('#btn, #name, #msg').attr('disabled', '');
+          
+         };
+     myWebSocket.onmessage = function (evt) {
+         var data = JSON.parse(evt.data);
+         // if (data.name === $('#name').val()
+         if (data.name === fbName) {
+                     displayMessage('(me): ' + data.msg);
+                 }
+             else {
+                     displayMessage(data.name + ': ' + data.msg);
+                  }
+         };
+     myWebSocket.onclose = function (evt) {
+             displayMessage("Connection closed.");
+             $('#btn, #name, #msg').attr('disabled', 'disabled');
+         };
+      
+     $('#btn').click(function (e) {
+         alert(name);
+         e.preventDefault();
+         //name: $('#name').val(),
+             myWebSocket.send(JSON.stringify({
+                 name: fbName,
+                     msg: $('#msg').val()
+             }));
+         $('#msg').val('')
+     });
+    var fbName = "@Session["name"]";
+</script>
