@@ -5,20 +5,53 @@
   <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
   <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 <script type="text/javascript" src="/Resources/uploadify/jquery.uploadify.min.js"></script>
+
 <h2>Chat</h2>
 
-<label for="name" >Name</label>
-<input id="name" />
-<br />
 <label for="msg" >Message</label>
 <input id="msg"  />
 <br />
 <button id="btn" >Post</button>
-<div id="message_area">
-
+<br />
+<div id="container" style="position:relative;">
+    <div id="message_area" style="float:left;position:relative;">
+        <h2> Current Chat</h2>
+    </div>
+    <div id="chatHistory" style="float:left;position:relative;margin-left:150px;">
+        <h2> Chat History</h2>
+    </div>
 </div>
 
 <script>
+    $(document).ready(function () {
+
+        // page is now ready, initialize the calendar...
+
+        $.ajax({
+            url: '/Chat/GetChatHistory',
+            success: function (data) {
+                alert("success");
+                var logItem = [];
+
+                for (var i = 0; i < data.length; i++) {
+                    logItem.push({
+                        userId: data[i].user_id,
+                        message: data[i].message,
+                        name: data[i].name,
+                        timeStamp: data[i].timestamp
+                    });
+                }
+                for (var j = 0; j < logItem.length; j++) {
+                    $('#chatHistory').append('<br />' + '(' + logItem[j].timeStamp + ')  '+logItem[j].name+': '+logItem[j].message);
+                }
+            
+            },
+            error: function () {
+                alert("Failed");
+            }
+        });
+    });
+
     function displayMessage(msg) {
         $('#message_area').append('<br />'+msg);
          }
@@ -27,10 +60,14 @@
      var myWebSocket = new WebSocket("ws://localhost:8181");
      myWebSocket.onopen = function (evt) {
              //$('#btn, #name, #msg').attr('disabled', '');
-          
+         myWebSocket.send(JSON.stringify({
+             name: fbName,
+             msg: "has joined the chat"
+         }));
          };
      myWebSocket.onmessage = function (evt) {
          var data = JSON.parse(evt.data);
+         alert("data: " + data);
          // if (data.name === $('#name').val()
          if (data.name === fbName) {
                      displayMessage('(me): ' + data.msg);
@@ -40,8 +77,9 @@
                   }
          };
      myWebSocket.onclose = function (evt) {
-             displayMessage("Connection closed.");
-             $('#btn, #name, #msg').attr('disabled', 'disabled');
+            // displayMessage("Connection closed.");
+         // $('#btn, #name, #msg').attr('disabled', 'disabled');
+         alert("CLOSED");
          };
       
      $('#btn').click(function (e) {
@@ -50,9 +88,17 @@
          //name: $('#name').val(),
              myWebSocket.send(JSON.stringify({
                  name: fbName,
-                     msg: $('#msg').val()
+                    msg: $('#msg').val()
              }));
          $('#msg').val('')
      });
-    var fbName = "@Session["name"]";
+     var fbName = "@Session["name"]";
+
 </script>
+
+
+
+
+
+
+

@@ -120,6 +120,24 @@
     <Compile Include="Models\CalendarEvent.cs">
       <DependentUpon>DBEntityItem.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ChatLog.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChatLog.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ChatLog.cs">
+      <DependentUpon>ChatLog.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ChatLog.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChatLog.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ChatLog1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChatLog.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\DBEntityItem.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -214,6 +232,23 @@
       <DependentUpon>DBEntityItem.edmx</DependentUpon>
       <LastGenOutput>DBEntityItem.cs</LastGenOutput>
     </Content>
+    <EntityDeploy Include="Models\ChatLog.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ChatLog.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\ChatLog.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ChatLog.edmx</DependentUpon>
+      <LastGenOutput>ChatLog.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\ChatLog.edmx.diagram">
+      <DependentUpon>ChatLog.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\ChatLog.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ChatLog.edmx</DependentUpon>
+      <LastGenOutput>ChatLog1.cs</LastGenOutput>
+    </Content>
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\Profile.pubxml" />
     <Content Include="Resources\uploadify\check-exists.php" />
@@ -292,7 +327,9 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
