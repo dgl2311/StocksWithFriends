@@ -29,6 +29,7 @@
 
         $.ajax({
             url: '/Chat/GetChatHistory',
+            data: {userName: fbName},
             success: function (data) {
                 alert("success");
                 var logItem = [];
