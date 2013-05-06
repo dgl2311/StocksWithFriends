@@ -62,7 +62,7 @@ namespace StocksWithFriends.Controllers
             int numUserId = storedUserId;
             if (userIdString != null)
             {
-                chatLog.user_id = userIdString;
+                chatLog.user_id = Convert.ToInt32(userIdString);
 
                 if (_db.ChatLogs.Count()>0)
                 {
@@ -99,7 +99,7 @@ namespace StocksWithFriends.Controllers
             List<JsonChatHistory> jsonEvents = new List<JsonChatHistory>();
 
             var query = from p in _db.ChatLogs
-                        where p.user_id == userIdString
+                        where p.user_id == Convert.ToInt64(userIdString)
                         select p;
             IEnumerable<ChatLog> products = query.ToList();
             foreach (ChatLog e in products)
@@ -117,7 +117,7 @@ namespace StocksWithFriends.Controllers
         public JsonChatHistory(ChatLog chatLog)
         {
             id = chatLog.id;
-            user_id = chatLog.user_id;
+            user_id = Convert.ToInt64(chatLog.user_id);
             timestamp = chatLog.timestamp.ToString("yyyy-MM-dd HH:mm:00");
             string complexMessage = chatLog.message;
             string[] chunk = complexMessage.Split(',');
@@ -134,7 +134,7 @@ namespace StocksWithFriends.Controllers
         }
 
         public int id { get; set; }
-        public string user_id { get; set; }
+        public long user_id { get; set; }
         public string message { get; set; }
         public string name {get; set; }
         public string timestamp { get; set; }

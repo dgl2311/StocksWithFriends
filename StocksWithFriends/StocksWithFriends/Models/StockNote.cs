@@ -12,11 +12,11 @@ namespace StocksWithFriends.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ChatLog
+    public partial class StockNote
     {
         public int id { get; set; }
         public long user_id { get; set; }
-        public System.DateTime timestamp { get; set; }
-        public string message { get; set; }
+        public string stock_symbol { get; set; }
+        public string note_string { get; set; }
     }
 }

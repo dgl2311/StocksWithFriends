@@ -7,17 +7,49 @@
       <Schema Namespace="DBModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="DBModelStoreContainer">
           <EntitySet Name="CalendarEvents" EntityType="DBModel.Store.CalendarEvents" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ChatLogs" EntityType="DBModel.Store.ChatLogs" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="StockNote" EntityType="DBModel.Store.StockNote" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="StockTransactions" EntityType="DBModel.Store.StockTransactions" store:Type="Tables" Schema="dbo" />
         </EntityContainer>
         <EntityType Name="CalendarEvents">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" Nullable="false" />
-          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="user_id" Type="bigint" Nullable="false" />
           <Property Name="event_name" Type="varchar" MaxLength="255" />
-          <Property Name="event_description" Type="varchar" MaxLength="255" />
-          <Property Name="start_timestamp" Type="datetime" />
-          <Property Name="end_timestamp" Type="datetime" />
+          <Property Name="event_description" Type="varchar" MaxLength="2047" />
+          <Property Name="start_timestamp" Type="datetime" Nullable="false" />
+          <Property Name="end_timestamp" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ChatLogs">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="user_id" Type="bigint" Nullable="false" />
+          <Property Name="timestamp" Type="datetime" Nullable="false" />
+          <Property Name="message" Type="varchar" MaxLength="2047" />
+        </EntityType>
+        <EntityType Name="StockNote">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="user_id" Type="bigint" Nullable="false" />
+          <Property Name="stock_symbol" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="note_string" Type="varchar" MaxLength="2047" />
+        </EntityType>
+        <EntityType Name="StockTransactions">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="user_id" Type="bigint" Nullable="false" />
+          <Property Name="timestamp" Type="datetime" Nullable="false" />
+          <Property Name="stock_symbol" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="tx_quantity_delta" Type="int" Nullable="false" />
+          <Property Name="tx_price" Type="float" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:StorageModels>
@@ -26,17 +58,49 @@
       <Schema Namespace="DBModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
         <EntityContainer Name="DBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="CalendarEvents" EntityType="DBModel.CalendarEvent" />
+          <EntitySet Name="ChatLogs" EntityType="DBModel.ChatLog" />
+          <EntitySet Name="StockNotes" EntityType="DBModel.StockNote" />
+          <EntitySet Name="StockTransactions" EntityType="DBModel.StockTransaction" />
         </EntityContainer>
         <EntityType Name="CalendarEvent">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="user_id" Type="Int64" Nullable="false" />
           <Property Name="event_name" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
-          <Property Name="event_description" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
-          <Property Name="start_timestamp" Type="DateTime" Precision="3" />
-          <Property Name="end_timestamp" Type="DateTime" Precision="3" />
+          <Property Name="event_description" Type="String" MaxLength="2047" Unicode="false" FixedLength="false" />
+          <Property Name="start_timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="end_timestamp" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="ChatLog">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="user_id" Type="Int64" Nullable="false" />
+          <Property Name="timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="message" Type="String" MaxLength="2047" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="StockNote">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="user_id" Type="Int64" Nullable="false" />
+          <Property Name="stock_symbol" Type="String" Nullable="false" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="note_string" Type="String" MaxLength="2047" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="StockTransaction">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="user_id" Type="Int64" Nullable="false" />
+          <Property Name="timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="stock_symbol" Type="String" Nullable="false" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="tx_quantity_delta" Type="Int32" Nullable="false" />
+          <Property Name="tx_price" Type="Double" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -53,6 +117,38 @@
                 <ScalarProperty Name="event_description" ColumnName="event_description" />
                 <ScalarProperty Name="start_timestamp" ColumnName="start_timestamp" />
                 <ScalarProperty Name="end_timestamp" ColumnName="end_timestamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ChatLogs">
+            <EntityTypeMapping TypeName="DBModel.ChatLog">
+              <MappingFragment StoreEntitySet="ChatLogs">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="timestamp" ColumnName="timestamp" />
+                <ScalarProperty Name="message" ColumnName="message" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StockNotes">
+            <EntityTypeMapping TypeName="DBModel.StockNote">
+              <MappingFragment StoreEntitySet="StockNote">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="stock_symbol" ColumnName="stock_symbol" />
+                <ScalarProperty Name="note_string" ColumnName="note_string" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StockTransactions">
+            <EntityTypeMapping TypeName="DBModel.StockTransaction">
+              <MappingFragment StoreEntitySet="StockTransactions">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="timestamp" ColumnName="timestamp" />
+                <ScalarProperty Name="stock_symbol" ColumnName="stock_symbol" />
+                <ScalarProperty Name="tx_quantity_delta" ColumnName="tx_quantity_delta" />
+                <ScalarProperty Name="tx_price" ColumnName="tx_price" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

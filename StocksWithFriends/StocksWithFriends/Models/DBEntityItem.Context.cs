@@ -26,5 +26,8 @@ namespace StocksWithFriends.Models
         }
     
         public DbSet<CalendarEvent> CalendarEvents { get; set; }
+        public DbSet<ChatLog> ChatLogs { get; set; }
+        public DbSet<StockNote> StockNotes { get; set; }
+        public DbSet<StockTransaction> StockTransactions { get; set; }
     }
 }
