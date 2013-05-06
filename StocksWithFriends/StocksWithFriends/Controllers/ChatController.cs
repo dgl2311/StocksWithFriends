@@ -17,20 +17,23 @@ namespace StocksWithFriends.Controllers
         private static Dictionary<string, string> nameSessionMapping = new Dictionary<string, string>();
         private static Dictionary<string, string> nameSocketMapping = new Dictionary<string, string>();
         private static ChatItem _db = null;
-        private static int storedUserId = -1;
 
         
 
        protected override void Initialize(System.Web.Routing.RequestContext requestContext)
        {
            base.Initialize(requestContext);
+
            string userName = (string)Session["name"];
            string userId = (string)Session["userId"];
            requestContext.HttpContext.Session["name"] = userName; // do your stuff
            requestContext.HttpContext.Session["userId"] = userId;
-           if(!nameSessionMapping.ContainsKey(userName))
-                nameSessionMapping[userName] = userId;
+           if (userName != null && userId != null)
+           {
+               if (!nameSessionMapping.ContainsKey(userName))
+                   nameSessionMapping[userName] = userId;
 
+           }
            if (_db == null)
                _db = new ChatItem();
        }
@@ -121,7 +124,6 @@ namespace StocksWithFriends.Controllers
             }            
         }
 
-        [WebMethod(EnableSession = true)]
         public ActionResult Chat()
         {
            // nameString = (string)System.Web.HttpContext.Current.Session["name"];
