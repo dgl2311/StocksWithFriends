@@ -93,7 +93,7 @@ namespace StocksWithFriends.Controllers
             Session["userId"] = null;
             Session["name"] = null;
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Welcome", "Home");
         }
 
         //

@@ -1,8 +1,26 @@
-﻿@{
-    ViewBag.Title = "Welcome";
-}
+﻿<link href="@Url.Content("~/Content/Welcome.css")" rel="stylesheet" type="text/css" />
 
-<h2>Welcome</h2>
-<p>
-     Welcome
-</p>
+<div id="welcome_header">
+    <img src="../../Resources/images/logo.png" id="welcome_logo" />
+</div>
+
+<div id="welcome_logindisplay">
+    @Html.Partial("_LogOnPartial")
+</div>
+
+<div id="welcome_content_left">
+    <h2>Stocks!  Calendars!  Friends!</h2>
+    <p>
+        Because why use separate sites for each, </br >when you could just mash them all into one!
+    </p>
+</div>
+
+<div id="welcome_content_right">
+    <ul>
+        <li>Sell and buy stocks with realtime information updates</li>
+        <li>Add and save notes about stocks</li>
+        <li>Chat with other StocksVilleWithFriends users</li>
+        <li>Maintain an events calendar</li>
+        <li>Post statuses, upload photos, and add friends on Facebook</li>
+    </ul>
+</div>
