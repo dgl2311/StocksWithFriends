@@ -89,6 +89,10 @@ namespace StocksWithFriends.Controllers
         {
             FormsAuthentication.SignOut();
 
+            Session["accessToken"] = null;
+            Session["userId"] = null;
+            Session["name"] = null;
+
             return RedirectToAction("Index", "Home");
         }
 

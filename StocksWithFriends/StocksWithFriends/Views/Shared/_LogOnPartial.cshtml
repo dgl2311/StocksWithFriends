@@ -29,7 +29,6 @@ else {
 
     function afterFacebookConnect() {
         FB.getLoginStatus(function(response) {
-            console.log(response.authResponse);
             if (response.authResponse) {
                 window.location = "../Account/FacebookLogin?token=" + 
                        response.authResponse.accessToken;

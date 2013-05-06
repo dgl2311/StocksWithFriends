@@ -1,4 +1,5 @@
-﻿using StocksWithFriends.Models;
+﻿using StocksWithFriends.Attributes;
+using StocksWithFriends.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Web.UI.WebControls;
 
 namespace StocksWithFriends.Controllers
 {
+    [FacebookAuthorize]
     public class CalenderController : Controller
     {
         DBEntities _db;
