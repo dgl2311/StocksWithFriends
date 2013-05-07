@@ -16,7 +16,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" Nullable="false" />
-          <Property Name="user_id" Type="bigint" Nullable="false" />
+          <Property Name="user_id" Type="varchar" Nullable="false" MaxLength="255" />
           <Property Name="event_name" Type="varchar" MaxLength="255" />
           <Property Name="event_description" Type="varchar" MaxLength="2047" />
           <Property Name="start_timestamp" Type="datetime" Nullable="false" />
@@ -27,7 +27,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" Nullable="false" />
-          <Property Name="user_id" Type="bigint" Nullable="false" />
+          <Property Name="user_id" Type="varchar" Nullable="false" MaxLength="255" />
           <Property Name="timestamp" Type="datetime" Nullable="false" />
           <Property Name="message" Type="varchar" MaxLength="2047" />
         </EntityType>
@@ -36,7 +36,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" Nullable="false" />
-          <Property Name="user_id" Type="bigint" Nullable="false" />
+          <Property Name="user_id" Type="varchar" Nullable="false" MaxLength="255" />
           <Property Name="stock_symbol" Type="varchar" Nullable="false" MaxLength="255" />
           <Property Name="note_string" Type="varchar" MaxLength="2047" />
         </EntityType>
@@ -45,7 +45,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" Nullable="false" />
-          <Property Name="user_id" Type="bigint" Nullable="false" />
+          <Property Name="user_id" Type="varchar" Nullable="false" MaxLength="255" />
           <Property Name="timestamp" Type="datetime" Nullable="false" />
           <Property Name="stock_symbol" Type="varchar" Nullable="false" MaxLength="255" />
           <Property Name="tx_quantity_delta" Type="int" Nullable="false" />
@@ -67,7 +67,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="user_id" Type="Int64" Nullable="false" />
+          <Property Name="user_id" Type="String" Nullable="false" MaxLength="255" Unicode="false" FixedLength="false" />
           <Property Name="event_name" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
           <Property Name="event_description" Type="String" MaxLength="2047" Unicode="false" FixedLength="false" />
           <Property Name="start_timestamp" Type="DateTime" Nullable="false" Precision="3" />
@@ -78,7 +78,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="user_id" Type="Int64" Nullable="false" />
+          <Property Name="user_id" Type="String" Nullable="false" MaxLength="255" Unicode="false" FixedLength="false" />
           <Property Name="timestamp" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="message" Type="String" MaxLength="2047" Unicode="false" FixedLength="false" />
         </EntityType>
@@ -87,7 +87,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="user_id" Type="Int64" Nullable="false" />
+          <Property Name="user_id" Type="String" Nullable="false" MaxLength="255" Unicode="false" FixedLength="false" />
           <Property Name="stock_symbol" Type="String" Nullable="false" MaxLength="255" Unicode="false" FixedLength="false" />
           <Property Name="note_string" Type="String" MaxLength="2047" Unicode="false" FixedLength="false" />
         </EntityType>
@@ -96,7 +96,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="user_id" Type="Int64" Nullable="false" />
+          <Property Name="user_id" Type="String" Nullable="false" MaxLength="255" Unicode="false" FixedLength="false" />
           <Property Name="timestamp" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="stock_symbol" Type="String" Nullable="false" MaxLength="255" Unicode="false" FixedLength="false" />
           <Property Name="tx_quantity_delta" Type="Int32" Nullable="false" />
