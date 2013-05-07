@@ -16,6 +16,8 @@ $(function () {
             console.log("result: " + data.Item1);
             if (data.Item1) {
                 console.log(data.Item2);
+                document.location.reload(true);
+                $('#tradeResult').text(data.Item2);
             }
             else { console.log("Error: " + data.Item2); }
         });
@@ -33,6 +35,8 @@ $(function () {
             console.log("result: " + data.Item1);
             if (data.Item1) {
                 console.log(data.Item2);
+                document.location.reload(true);
+                $('#tradeResult').text(data.Item2);
             }
             else { console.log("Error: " + data.Item2); }
         });
