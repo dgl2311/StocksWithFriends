@@ -1,0 +1,62 @@
+﻿﻿@if (Request.IsAuthenticated)
+{
+    <script>
+        $(document).ready(function () {
+
+            // page is now ready, initialize the calendar...
+
+            $.ajax({
+                url: 'Calender/GetEventsForToday',
+                success: function (data) {
+                    var events = [];
+
+                    for (var i = 0; i < data.length; i++) {
+                        events.push({
+                            title: data[i].event_name,
+                            start: data[i].start_string,
+                            end: data[i].end_string,
+                            allDay: data[i].all_day
+                        });
+                    }
+
+                    displayEvents(events);
+                },
+                error: function () {
+
+                }
+            });
+        });
+
+        function displayEvents(events) {
+            var html = "";
+
+            if (events.length == 0) {
+                html += "No events today.";
+            } else {
+                html += "Today's Events:";
+                html += "<ul>";
+                
+                for (var i = 0; i < events.length; i++) {
+                    html += "<li>";
+                    html += (events[i].title + ": ");
+
+                    if (events[i].allDay) {
+                        html += "(All Day)";
+                    } else {
+                        html += events[i].start.split(" ")[1];
+                    }
+
+                    html += "</li>";
+                }
+
+                html += "</ul>";
+            }
+
+            document.getElementById("welcome-home-events").innerHTML = html;
+        }
+    </script>
+    
+    <div id="welcome-home-events">
+
+    </div>
+}

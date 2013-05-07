@@ -9,7 +9,6 @@ using System.Web.UI.WebControls;
 
 namespace StocksWithFriends.Controllers
 {
-    [FacebookAuthorize]
     public class CalenderController : Controller
     {
         DBEntities _db;
@@ -17,6 +16,14 @@ namespace StocksWithFriends.Controllers
         public CalenderController()
         {
             _db = new DBEntities();
+        }
+
+        //
+        // GET: /Calender/Home
+
+        public ActionResult Home()
+        {
+            return PartialView();
         }
 
         //
@@ -59,6 +66,27 @@ namespace StocksWithFriends.Controllers
                 if (e.user_id == Convert.ToInt64(Session["userId"]))
                 {
                     jsonEvents.Add(new JsonCalendarEvent(e));
+                }
+            }
+
+            return Json(jsonEvents, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetEventsForToday()
+        {
+            List<JsonCalendarEvent> jsonEvents = new List<JsonCalendarEvent>();
+
+            foreach (CalendarEvent e in _db.CalendarEvents.ToList())
+            {
+                if (e.user_id == Convert.ToInt64(Session["userId"]))
+                {
+                    System.DateTime now = System.DateTime.Now;
+
+                    if (e.start_timestamp.Date.CompareTo(now.Date) == 0 ||
+                        (e.start_timestamp.Date.CompareTo(now.Date) <= 0 &&
+                         e.end_timestamp.Date.CompareTo(now.Date) >= 0)) {
+                        jsonEvents.Add(new JsonCalendarEvent(e));
+                    }                    
                 }
             }
 
