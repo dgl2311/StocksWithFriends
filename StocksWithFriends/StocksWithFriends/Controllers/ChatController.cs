@@ -104,11 +104,11 @@ namespace StocksWithFriends.Controllers
 
             if (userIdString != "-1")
             {             
-                chatLog.user_id = Convert.ToInt32(userIdString);
+                chatLog.user_id = userIdString;
                 
                 try
                 {
-                    ChatItem _db = new ChatItem();
+                    DBEntities _db = new DBEntities();
                     if (_db.ChatLogs.Count() > 0)
                     {
                         chatLog.id = _db.ChatLogs.ToList().Last().id + 1;
@@ -138,7 +138,7 @@ namespace StocksWithFriends.Controllers
             if (nameSessionMapping.ContainsKey(userName))
                 userId = nameSessionMapping[userName];
 
-            ChatItem _db = new ChatItem();
+            DBEntities _db = new DBEntities();
 
             List<JsonChatHistory> jsonEvents = new List<JsonChatHistory>();
             var startQuery = from p in _db.ChatLogs

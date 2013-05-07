@@ -36,7 +36,7 @@ namespace StocksWithFriends.Controllers
             calendarEvent.event_description = description;
             calendarEvent.start_timestamp = new System.DateTime(startYear, startMonth, startDay, startHour, startMinute, startSecond);
             calendarEvent.end_timestamp = new System.DateTime(endYear, endMonth, endDay, endHour, endMinute, endSecond);
-            calendarEvent.user_id = Convert.ToInt64(Session["userId"]);
+            calendarEvent.user_id = (string)Session["userId"];
             calendarEvent.id = 0;
 
             if (_db.CalendarEvents.Count() > 0)
@@ -56,7 +56,7 @@ namespace StocksWithFriends.Controllers
 
             foreach (CalendarEvent e in _db.CalendarEvents.ToList())
             {
-                if (e.user_id == Convert.ToInt64(Session["userId"]))
+                if (e.user_id.Equals(Session["userId"]))
                 {
                     jsonEvents.Add(new JsonCalendarEvent(e));
                 }
@@ -86,7 +86,7 @@ namespace StocksWithFriends.Controllers
         }
 
         public int id { get; set; }
-        public long user_id { get; set; }
+        public string user_id { get; set; }
         public string event_name { get; set; }
         public string event_description { get; set; }
         public string start_string { get; set; }
