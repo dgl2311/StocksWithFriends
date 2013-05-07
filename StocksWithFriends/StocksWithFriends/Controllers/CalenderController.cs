@@ -57,6 +57,23 @@ namespace StocksWithFriends.Controllers
             return RedirectToAction("Index", "Calender");
         }
 
+        public ActionResult DeleteEvent(int id)
+        {
+            var eventQuery = from e in _db.CalendarEvents
+                        where e.id == id
+                        select e;
+
+            CalendarEvent[] events = eventQuery.ToList().ToArray();
+            foreach (CalendarEvent matchedEvent in events)
+            {
+                _db.CalendarEvents.Remove(matchedEvent);
+            }
+
+            _db.SaveChanges();
+
+            return RedirectToAction("Index", "Calender");
+        }
+
         public JsonResult GetEvents()
         {
             List<JsonCalendarEvent> jsonEvents = new List<JsonCalendarEvent>();
