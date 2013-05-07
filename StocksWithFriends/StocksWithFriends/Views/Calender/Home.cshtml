@@ -29,22 +29,37 @@
 
         function displayEvents(events) {
             var html = "";
+            html += "<h2>Today's Events:</h2>";
 
             if (events.length == 0) {
                 html += "No events today.";
             } else {
-                html += "Today's Events:";
                 html += "<ul>";
                 
                 for (var i = 0; i < events.length; i++) {
                     html += "<li>";
-                    html += (events[i].title + ": ");
 
                     if (events[i].allDay) {
                         html += "(All Day)";
                     } else {
-                        html += events[i].start.split(" ")[1];
+                        var startString = events[i].start.split(" ")[1];
+                        var hour = parseInt(startString.split(":")[0]);
+                        var minute = parseInt(startString.split(":")[1]);
+                        var am = (hour < 12);
+
+                        if (hour > 12) {
+                            hour -= 12;
+                        } else if (hour === 0) {
+                            hour = 12;
+                        }
+
+                        var minuteString = (minute < 10 ? "0" : "") + minute.toString();
+                         
+                        html += (hour.toString() + ":" + minuteString + " " + (am ? "AM" : "PM"));
                     }
+
+                    html += " - ";
+                    html += events[i].title;
 
                     html += "</li>";
                 }

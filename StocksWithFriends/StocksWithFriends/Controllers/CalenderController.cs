@@ -75,10 +75,12 @@ namespace StocksWithFriends.Controllers
         public JsonResult GetEventsForToday()
         {
             List<JsonCalendarEvent> jsonEvents = new List<JsonCalendarEvent>();
+            List<CalendarEvent> events = _db.CalendarEvents.ToList();
+            events.Sort((x, y) => DateTime.Compare(x.start_timestamp, y.start_timestamp));
 
-            foreach (CalendarEvent e in _db.CalendarEvents.ToList())
+            foreach (CalendarEvent e in events)
             {
-                if (e.user_id == Convert.ToInt64(Session["userId"]))
+                if (e.user_id.Equals(Session["userId"]))
                 {
                     System.DateTime now = System.DateTime.Now;
 
