@@ -1,53 +1,98 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Stocks";
 }
 
-<script>
-    $(function() {
-        $('#addStock').on('click', function () {
-            console.log("Sending data");
-            $.ajax({
-                dataType: "json",
-                url: 'Stock/AddStock',
-                data: {symbol: $('#symbol').val()}
-            }).done(function (data) {
-                debugger;
-                console.log(data);
-                console.log("result: " + data.Item1);
-                if (data.Item1) {
-                    console.log("adding row");
-                    $('#dataTable').append('<tr><td>' + data.Item2.name + '</td><td>' + data.Item2.symbol + '</td><td>' + data.Item2.price + '</td></tr>');
-                }
-                else { console.log("invalid symbol"); }
-            });
-            console.log("completed?");
-        });
-    });
-</script>
-
-<p>
- <label for="symbol">Stock Symbol</label>
- <input type="text" id="symbol" name="symbol">
- <input type="button" id="addStock" value="Look up">
-</p>
+<script src="@Url.Content("~/Scripts/stocks.js")"></script>
+<link href="@Url.Content("~/Content/Stocks.css")" rel="stylesheet" type="text/css" />
 
 @if (ViewBag.success)
 {
-    <table id="dataTable">
-        <tr>
-            <th>Name</th>
-            <th>Symbol</th>
-            <th>Price</th>
-        </tr>
-        @foreach (StocksWithFriends.Controllers.Stock s in ViewBag.stocks)
-        {
+    <div id="buy-sell-strip">
+        <label for="trade">Trade Now:</label>
+        <input type="text"  name="tradeSymbol" id="tradeSymbol" style="width: 50px" />
+        <input type="button" id="fetch" value="Fetch">
+        <label for="currentPrice" id="currentPrice">$ ???</label>
+        <input type="number" name="quantity" id="quantity" min="1" step="1" value="1" style="width: 50px">
+        <input type="button" id="executeBuy" value="Buy">
+        <input type="button" id="executeSell" value="Sell">
+    </div>
+    <div id="stocks-left-pane">
+        <h3>My Stocks</h3>
+        <table id="dataTable">
             <tr>
-                <td>@s.name</td>
-                <td>@s.symbol</td>
-                <td>@s.price</td>
+                <th>Name</th>
+                <th>Symbol</th>
+                <th>Quanity</th>
+                <th>Price</th>
             </tr>
+            @foreach (StocksWithFriends.Controllers.StockHistory h in ViewBag.data)
+            {
+                <tr>
+                    <td><a onmouseover="makeVisible('history-details-@h.stock.symbol');">@h.stock.name</a></td>
+                    <td>@h.stock.symbol</td>
+                    <td>@h.quantity</td>
+                    <td>$@h.stock.price.ToString("0.00")</td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div id="stocks-right-pane">
+        @foreach (StocksWithFriends.Controllers.StockHistory h in ViewBag.data)
+        {
+            <section id="history-details-@h.stock.symbol" style="display:none">
+                <div class="stock-details">
+                    <h2>@h.stock.symbol Details</h2>
+                    <table>
+                        <tr>
+                            <td>Total profit:</td>
+                            <td>$@h.totalProfit</td>
+                        </tr>
+                        <tr>
+                            <td>Stock value:</td>
+                            <td>$@h.totalValue</td>
+                        </tr>
+                        <tr>
+                            <td>Total worth:</td>
+                            <td>$@h.worthVia</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="stock-notes">
+                    <label for="note" class="note">Note</label>
+                    <textarea rows="4" cols="50" id="note-@h.stock.symbol">@h.note</textarea>
+                    <input type="button" class="save" value="Save">
+                </div>
+                <div class="stock-transactions">
+                    <h3 class="stock-transactions-title">Transaction History</h3>
+                    <table>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Action</th>
+                            <th>Quantiy</th>
+                            <th>Price</th>
+                            <th>Tx Value</th>
+                            <th>Total Stock</th>
+                            <th>Stock Value</th>
+                        </tr>
+
+                        @for (int i = 0; i < h.transactions.Count; i++)
+                        {
+                            StocksWithFriends.Controllers.Transaction t = h.transactions[i];
+                            <tr>
+                                <td>@t.timestamp.ToString("d MMMM, yyyy h:mm:ss tt")</td>
+                                <td>@(t.quantity > 0 ? "buy" : "sell")</td>
+                                <td>@Math.Abs(t.quantity)</td>
+                                <td>$@t.price.ToString("F2")</td>
+                                <td>$@t.txAmount.ToString("F2")</td>
+                                <td>@h.runningTotal[i]</td>
+                                <td>$@(h.runningTotal[i] * t.price)</td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </section>
         }
-    </table>
+    </div>
 }
 else
 {

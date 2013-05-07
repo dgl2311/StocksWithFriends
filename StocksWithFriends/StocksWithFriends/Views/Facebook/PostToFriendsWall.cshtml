@@ -43,15 +43,16 @@
             method: 'feed',
             to: id,
             redirect_uri: this.window.location.href,
-            link: 'https://developers.facebook.com/docs/reference/dialogs/',
-            picture: 'http://fbrell.com/f8.jpg',
-            name: 'Facebook Dialogs',
-            caption: 'Reference Documentation',
-            description: 'Using Dialogs to interact with users.'
+            link: '',
+            picture: '',
+            name: '',
+            caption: '',
+            description: ''
         };
 
         function callback(response) {
-            
+            alert("Posted Successfully");
+            document.getElementById('fb-input-text').value = '';
         }
 
         FB.ui(obj, callback);
