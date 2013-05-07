@@ -45,6 +45,9 @@
     <Reference Include="Facebook">
       <HintPath>..\packages\Facebook.6.4.0\lib\net40-client\Facebook.dll</HintPath>
     </Reference>
+    <Reference Include="Fleck">
+      <HintPath>..\packages\Fleck.0.9.6.19\lib\net40\Fleck.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
@@ -53,6 +56,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -101,8 +106,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\FacebookAuthorizeAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CalenderController.cs" />
+    <Compile Include="Controllers\ChatController.cs" />
     <Compile Include="Controllers\FacebookController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\StockController.cs" />
@@ -110,8 +117,49 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Models\CalendarEvent.cs" />
+    <Compile Include="Models\CalendarEvent.cs">
+      <DependentUpon>DBEntityItem.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ChatLog.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChatLog.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ChatLog.cs">
+      <DependentUpon>DBEntityItem.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ChatLog.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChatLog.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ChatLog1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChatLog.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DBEntityItem.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBEntityItem.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DBEntityItem.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBEntityItem.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DBEntityItem.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBEntityItem.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\NewsFeedItem.cs" />
+    <Compile Include="Models\StockNote.cs">
+      <DependentUpon>DBEntityItem.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StockTransaction.cs">
+      <DependentUpon>DBEntityItem.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -172,7 +220,42 @@
     <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="Content\Welcome.css" />
     <Content Include="Global.asax" />
+    <EntityDeploy Include="Models\ChatLog.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ChatLog.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\ChatLog.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ChatLog.edmx</DependentUpon>
+      <LastGenOutput>ChatLog.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\ChatLog.edmx.diagram">
+      <DependentUpon>ChatLog.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\ChatLog.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ChatLog.edmx</DependentUpon>
+      <LastGenOutput>ChatLog1.cs</LastGenOutput>
+    </Content>
+    <EntityDeploy Include="Models\DBEntityItem.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DBEntityItem.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\DBEntityItem.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DBEntityItem.edmx</DependentUpon>
+      <LastGenOutput>DBEntityItem.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\DBEntityItem.edmx.diagram">
+      <DependentUpon>DBEntityItem.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\DBEntityItem.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DBEntityItem.edmx</DependentUpon>
+      <LastGenOutput>DBEntityItem.cs</LastGenOutput>
+    </Content>
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\Profile.pubxml" />
     <Content Include="Resources\uploadify\check-exists.php" />
@@ -192,6 +275,10 @@
     <Content Include="Scripts\gcal.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
+    <None Include="Scripts\jquery-2.0.0.intellisense.js" />
+    <Content Include="Scripts\jquery-2.0.0.js" />
+    <Content Include="Scripts\jquery-2.0.0.min.js" />
+    <Content Include="Scripts\jquery-2.0.0.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\jquery-ui-1.10.2.custom.min.js" />
@@ -200,6 +287,7 @@
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />
+    <Content Include="SQL Scripts\CreateDatabase.sql" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -244,12 +332,19 @@
     </Content>
     <Content Include="Views\Facebook\NewsFeed.cshtml" />
     <Content Include="Views\Stock\LookUp.cshtml" />
+    <Content Include="Views\Chat\Chat.cshtml" />
+    <Content Include="Views\Home\Welcome.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

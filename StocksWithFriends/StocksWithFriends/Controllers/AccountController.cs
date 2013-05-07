@@ -35,11 +35,18 @@ namespace StocksWithFriends.Controllers
             string email = jsonUserInfo.Value<string>("email");
             string locale = jsonUserInfo.Value<string>("locale");
             string userId = jsonUserInfo.Value<string>("id");
+            string name = jsonUserInfo.Value<string>("name");
 
             FormsAuthentication.SetAuthCookie(username, true);
 
             Session["accessToken"] = token;
             Session["userId"] = userId;
+            Session["name"] = name;
+            //******************************************
+            //STORE USERID AND NAME AND INFO IN DATABASE HERE
+            //DATABASE CALLS
+            //*******************************************
+            
 
             return RedirectToAction("Index", "Home");
         }
@@ -82,7 +89,11 @@ namespace StocksWithFriends.Controllers
         {
             FormsAuthentication.SignOut();
 
-            return RedirectToAction("Index", "Home");
+            Session["accessToken"] = null;
+            Session["userId"] = null;
+            Session["name"] = null;
+
+            return RedirectToAction("Welcome", "Home");
         }
 
         //

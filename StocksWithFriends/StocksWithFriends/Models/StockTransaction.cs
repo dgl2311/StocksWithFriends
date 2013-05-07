@@ -12,13 +12,13 @@ namespace StocksWithFriends.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class CalendarEvent
+    public partial class StockTransaction
     {
         public int id { get; set; }
         public long user_id { get; set; }
-        public string event_name { get; set; }
-        public string event_description { get; set; }
-        public System.DateTime start_timestamp { get; set; }
-        public System.DateTime end_timestamp { get; set; }
+        public System.DateTime timestamp { get; set; }
+        public string stock_symbol { get; set; }
+        public int tx_quantity_delta { get; set; }
+        public double tx_price { get; set; }
     }
 }
