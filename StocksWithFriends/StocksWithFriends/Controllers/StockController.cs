@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Diagnostics;
+using StocksWithFriends.Models;
 
 namespace StocksWithFriends.Controllers
 {
@@ -23,32 +24,35 @@ namespace StocksWithFriends.Controllers
     {
         //
         // GET: /Stock/
-        List<string> symbols = new List<string> { "GOOG", "AAPL", "MSFT", "DIS", "T" };
         Random r = new Random();
+
+        DBEntities _db;
+
+        public StockController()
+        {
+            _db = new DBEntities();
+        }
 
         public ActionResult Index()
         {
-            if (Request.QueryString["symbol"] != null)
-                symbols.Add(Request.QueryString["symbol"]);
-
-            List<Stock> stocks = LoadStocks();
-
-            List<StockHistory> history = LoadStockHistory(stocks);
+            List<StockHistory> history = GetStockInfo();
 
             ViewBag.data = history;
-            ViewBag.success = history.Count > 0;
+            ViewBag.success = true; //history.Count > 0;
             GetResponseText();
             return View();
         }
 
         public ActionResult Ticker()
         {
+            List<StockHistory> data = GetStockInfo();
             List<Stock> stocks = new List<Stock>();
-            foreach (string symbol in symbols)
-            {
-                Stock stock = GetStock(MakeStockUrl(symbol));
-                if (stock != null) stocks.Add(stock);
-            }
+
+            data.Sort((a, b) => b.totalValue.CompareTo(a.totalValue));
+
+            int i = 0;
+            while (i < 5 && i < data.Count)
+                stocks.Add(data[i++].stock);
 
             if (stocks.Count == 0)
                 ViewBag.success = false;
@@ -84,31 +88,6 @@ namespace StocksWithFriends.Controllers
         public void GetResponseText()
         {
 
-        }
-
-        private List<Stock> LoadStocks()
-        {
-            List<Stock> stocks = new List<Stock>();
-            foreach (string symbol in symbols)
-            {
-                Stock stock = GetStock(MakeStockUrl(symbol));
-                if (stock != null) stocks.Add(stock);
-            }
-
-            if (stocks.Count == 0)
-                ViewBag.success = false;
-
-            return stocks;
-        }
-
-        private List<StockHistory> LoadStockHistory(List<Stock> stocks)
-        {
-            List<StockHistory> output = new List<StockHistory>();
-
-            foreach (Stock s in stocks)
-                output.Add(new StockHistory(s, generateDummyData(5, s.price)));
-
-            return output;
         }
 
         private Uri MakeStockUrl(string symbol)
@@ -163,82 +142,173 @@ namespace StocksWithFriends.Controllers
 
         public JsonResult BuyStock(string symbol, int quantity)
         {
+            if (Session["userId"] == null)
+                return null;
+
             Stock s = GetStock(MakeStockUrl(symbol));
             Tuple<bool, string> result;
 
             if (s != null)
             {
-                bool success = false;
-                // Database entry here
-                if (success) // success
+                try
+                {
+                    _db.StockTransactions.Add(MakeTransaction(s, quantity));
+                    _db.SaveChanges();
+
                     result = new Tuple<bool, string>(true, "Stock purchased successfully");
-                else
-                    result = new Tuple<bool, string>(false, "Error message here?");
+                }
+                catch (Exception e) { result = new Tuple<bool, string>(false, e.Message); }
             }
             else
-            {
                 result = new Tuple<bool, string>(false, "Stock symbol not valid");
-            }
 
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        private StockTransaction MakeTransaction(Stock stock, int quantity)
+        {
+            StockTransaction tx = new StockTransaction();
+
+            tx.stock_symbol = stock.symbol;
+            tx.timestamp = DateTime.Now;
+            tx.tx_price = stock.price;
+            tx.tx_quantity_delta = quantity;
+            tx.user_id = (string)Session["userId"];
+            tx.id = (_db.StockTransactions.Count() > 0 ? _db.StockTransactions.ToList().Last().id + 1 : 0);
+
+            return tx;
         }
 
         public JsonResult SellStock(string symbol, int quantity)
         {
+            if (Session["userId"] == null)
+                return null;
+
             Stock s = GetStock(MakeStockUrl(symbol));
             Tuple<bool, string> result;
 
             if (s != null)
             {
-                bool success = false;
-                // Database entry here
-                if (success) // success
-                    result = new Tuple<bool, string>(true, "Stock sold successfully");
-                else
-                    result = new Tuple<bool, string>(false, String.Format("Cannot sell {0} shares, as you only own {1}", -1, -1));
+                List<StockHistory> history = GetStockInfo();
+
+                bool canSell = false;
+                int currentQuantity = -1;
+
+                foreach (StockHistory data in history)
+                {
+                    if (data.stock.symbol.Equals(symbol))
+                    {
+                        currentQuantity = data.quantity;
+                        canSell = (currentQuantity >= quantity);
+
+                        break;
+                    }
+                }
+
+                if (canSell)
+                {
+                    try
+                    {
+                        _db.StockTransactions.Add(MakeTransaction(s, -quantity));
+                        _db.SaveChanges();
+
+                        result = new Tuple<bool, string>(true, "Stock sold successfully");
+                    }
+                    catch (Exception e) { result = new Tuple<bool, string>(false, e.Message); }
+                }
+                else { result = new Tuple<bool, string>(false, String.Format("Cannot sell {0} shares, as you only own {1}", quantity, currentQuantity)); }
             }
             else
-            {
                 result = new Tuple<bool, string>(false, "Stock symbol not valid");
-            }
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult SaveNote(string symbol, string note)
+        public JsonResult SaveNote(string symbol, string noteString)
         {
+            if (Session["userId"] == null)
+                return null;
+
+            Stock s = GetStock(MakeStockUrl(symbol));
             Tuple<bool, string> result;
 
-            bool success = false;
-            // Database entry here
+            if (s != null)
+            {
+                try
+                {
+                    StockNote note = new StockNote();
 
-            if (success) // success
-                result = new Tuple<bool, string>(true, "Note saved successfully");
+                    var oldNoteArray = from n in _db.StockNotes
+                                       where n.stock_symbol == (string)symbol
+                                       select n;
+
+                    StockNote[] oldNotes = oldNoteArray.ToList().ToArray();
+
+                    foreach (StockNote sn in oldNotes)
+                        _db.StockNotes.Remove(sn);
+
+                    _db.SaveChanges();
+
+                    note.stock_symbol = symbol;
+                    note.note_string = noteString;
+                    note.user_id = (string)Session["userId"];
+                    note.id = (_db.StockNotes.Count() > 0 ? _db.StockNotes.ToList().Last().id + 1 : 0);
+
+                    _db.StockNotes.Add(note);
+                    _db.SaveChanges();
+
+                    result = new Tuple<bool, string>(true, "Stock purchased successfully");
+                }
+                catch (Exception e) { result = new Tuple<bool, string>(false, e.Message); }
+            }
             else
-                result = new Tuple<bool, string>(false, "Note not saved");
+                result = new Tuple<bool, string>(false, "Stock symbol not valid");
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        private List<Transaction> generateDummyData(int n, float pricePoint = 50)
+        private List<StockHistory> GetStockInfo()
         {
-            List<Transaction> output = new List<Transaction>();
+            List<StockHistory> output = new List<StockHistory>();
 
-            float price = pricePoint;
-            DateTime timestamp = new DateTime(2012, 1, 1);
-            int quantity = 20;
-            int runningTot = quantity;
-
-            for (int i = 0; i < n; i++)
+            if (Session["userId"] == null)
             {
-                output.Add(new Transaction(timestamp, quantity, price));
-                price *= (float)(r.NextDouble() * 0.4 + 0.8);
-                timestamp = timestamp.AddDays(r.Next(1, 20));
-                Debug.WriteLine(String.Format("Random stuff: {0} to {1}", -runningTot + 1, (int)(runningTot / 2) + 5));
-                quantity = r.Next(-runningTot + 1, (int)(runningTot / 2) + 5);
-                runningTot += quantity;
+                ViewBag.success = false;
+                return output;
+            }
 
-                Debug.WriteLine(output[output.Count - 1]);
+            string uid = (string)Session["userId"];
+
+            var transactionModels = from tx in _db.StockTransactions
+                                    where tx.user_id == uid
+                                    select tx;
+
+            var noteModels = from note in _db.StockNotes
+                             where note.user_id == uid
+                             select note;
+
+            StockTransaction[] models = transactionModels.ToList().ToArray();
+            StockNote[] notes = noteModels.ToList().ToArray();
+
+            Dictionary<string, List<Transaction>> txMap = new Dictionary<string, List<Transaction>>();
+            Dictionary<string, string> noteMap = new Dictionary<string, string>();
+
+
+            foreach (StockTransaction tx in models)
+            {
+                if (!txMap.ContainsKey(tx.stock_symbol))
+                    txMap.Add(tx.stock_symbol, new List<Transaction>());
+                txMap[tx.stock_symbol].Add(new Transaction(tx.timestamp, tx.tx_quantity_delta, (float)tx.tx_price));
+            }
+
+            foreach (StockNote n in notes)
+                noteMap[n.stock_symbol] = n.note_string;
+
+            foreach (string key in txMap.Keys)
+            {
+                Stock s = GetStock(MakeStockUrl(key));
+                if (s == null) continue;
+                output.Add(new StockHistory(s, txMap[key], (noteMap.ContainsKey(key) ? noteMap[key] : String.Empty)));
             }
 
             return output;

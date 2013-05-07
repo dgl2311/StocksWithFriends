@@ -45,7 +45,7 @@ $(function () {
         $.ajax({
             dataType: "json",
             url: 'Stock/SaveNote',
-            data: { symbol: activeSymbol, note: $('#note-' + activeSymbol).val() }
+            data: { symbol: activeSymbol, noteString: $('#note-' + activeSymbol).val() }
         }).done(function (data) {
             console.log(data);
             console.log("result: " + data.Item1);

@@ -3,30 +3,6 @@
         ViewBag.Title = "Index";
     }
 
-    <script>
-        $(function () {
-            $('#addStock').on('click', function () {
-                console.log("Sending data");
-                $.ajax({
-                    dataType: "json",
-                    url: 'Stock/AddStock',
-                    data: { symbol: $('#symbol').val() }
-                }).done(function (data) {
-                    debugger;
-                    console.log(data);
-                    console.log("result: " + data.Item1);
-                    if (data.Item1) {
-                        console.log("adding row");
-                        var i = $('#ticker_row > td').length;
-                        $('#ticker_row > td').eq(i - 2).after('<td><span class="ticker_cell_' + data.Item2.trend + '"><span class="stock_symbol"><a href="/Stock/Lookup?symbol=' + data.Item2.symbol + '">' + data.Item2.symbol + '</a></span>: <span class="stock_price">' + data.Item2.price + '</span></span></td>');
-                    }
-                    else { console.log("invalid symbol"); }
-                });
-                console.log("completed?");
-            });
-        });
-    </script>
-
     @if (ViewBag.success)
     {
         <table id="ticker_table">
@@ -47,10 +23,6 @@
                         </span>
                     </td>
                 }
-                <td id="ticker_add">
-                    <input type="text" id="symbol" name="symbol" style="width: 100px" placeholder="stock symbol">
-                    <input type="button" id="addStock" value="Add">
-                </td>
             </tr>
         </table>
     }
