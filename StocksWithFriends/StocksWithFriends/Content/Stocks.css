@@ -1,0 +1,31 @@
+﻿
+
+#stocks-left-pane {
+    float: left;
+    width: 45%;
+    border-right: 1px solid lightgray;
+    padding-right: 50px;
+    height: 100%;
+}
+
+#stocks-right-pane {
+    float: right;
+    width: 50%;
+}
+
+.stock-details {
+    display: inline-block;
+    width: 40%;
+    border: 1px solid green;
+    height: 180px;
+}
+
+.buy-sell-strip {
+    text-align: center;
+    margin: 0 auto;
+}
+
+.stock-transactions {
+    display: block;
+    border-top: 1px solid lightgray;
+}
