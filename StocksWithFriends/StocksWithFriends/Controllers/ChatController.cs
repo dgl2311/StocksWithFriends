@@ -128,7 +128,7 @@ namespace StocksWithFriends.Controllers
            // nameString = (string)System.Web.HttpContext.Current.Session["name"];
             //userIdString = (string)System.Web.HttpContext.Current.Session["userId"];
             
-            return View();
+            return PartialView();
         }
 
         [WebMethod(EnableSession = true)]
