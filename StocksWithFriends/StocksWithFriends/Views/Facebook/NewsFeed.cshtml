@@ -19,10 +19,16 @@
         });
     }
 </script>
+<style>
+
+input[type=button]{
+ background:transparent;
+ border:0;
+}
+</style>
 <div id="newsContainer">
 <h1> News Feed </h1>
 
-<button onclick="loadNewsfeed()">News Feed</button>
 
     @foreach(var item in Model)
 {
