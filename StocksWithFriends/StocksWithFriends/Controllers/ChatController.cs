@@ -16,7 +16,7 @@ namespace StocksWithFriends.Controllers
         private static List<IWebSocketConnection> allSockets = new List<IWebSocketConnection>();
         private static Dictionary<string, string> nameSessionMapping = new Dictionary<string, string>();
         private static Dictionary<string, string> nameSocketMapping = new Dictionary<string, string>();
-        private static ChatItem _db = null;
+
 
         
 
@@ -34,8 +34,6 @@ namespace StocksWithFriends.Controllers
                    nameSessionMapping[userName] = userId;
 
            }
-           if (_db == null)
-               _db = new ChatItem();
        }
 
         static ChatController()
@@ -110,6 +108,7 @@ namespace StocksWithFriends.Controllers
                 
                 try
                 {
+                    ChatItem _db = new ChatItem();
                     if (_db.ChatLogs.Count() > 0)
                     {
                         chatLog.id = _db.ChatLogs.ToList().Last().id + 1;
@@ -139,6 +138,8 @@ namespace StocksWithFriends.Controllers
             if (nameSessionMapping.ContainsKey(userName))
                 userId = nameSessionMapping[userName];
 
+            ChatItem _db = new ChatItem();
+
             List<JsonChatHistory> jsonEvents = new List<JsonChatHistory>();
             var startQuery = from p in _db.ChatLogs
                         where p.message.Contains("has joined the chat") && p.user_id==userId
@@ -149,18 +150,31 @@ namespace StocksWithFriends.Controllers
                         select p;
             ChatLog[] endLogs = endQuery.ToList().ToArray();
             List<ChatLog> finalHistory = new List<ChatLog>();
-            if (startLogs.Count() == endLogs.Count())
+            if (startLogs.Count() == endLogs.Count() + 1)
             {
                 for (int i = 0; i < startLogs.Count(); i++)
                 {
-                    int startIndex = startLogs[i].id;
-                    int endIndex = endLogs[i].id;
-                    var tempQuery = from p in _db.ChatLogs
-                                    where p.id >= startIndex && p.id <= endIndex
-                                    select p;
-                    IEnumerable<ChatLog> winningResults = tempQuery.ToList();
-                    foreach( ChatLog newLog in winningResults)
-                        finalHistory.Add(newLog);
+                    if (i == startLogs.Count()-1)
+                    {
+                        int startIndex = startLogs[i].id;
+                        var tempQuery = from p in _db.ChatLogs
+                                        where p.id >= startIndex
+                                        select p;
+                        IEnumerable<ChatLog> winningResults = tempQuery.ToList();
+                        foreach (ChatLog newLog in winningResults)
+                            finalHistory.Add(newLog);
+                    }
+                    else
+                    {
+                        int startIndex = startLogs[i].id;
+                        int endIndex = endLogs[i].id;
+                        var tempQuery = from p in _db.ChatLogs
+                                        where p.id >= startIndex && p.id <= endIndex
+                                        select p;
+                        IEnumerable<ChatLog> winningResults = tempQuery.ToList();
+                        foreach (ChatLog newLog in winningResults)
+                            finalHistory.Add(newLog);
+                    }                   
                 }
             }
 
