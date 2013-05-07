@@ -151,7 +151,7 @@ ul#menu {
         }
 
         ul#menu li a {
-            margin-right: -4px;
+            margin-right: 0px;
             padding: 21px 40px;
             font-weight: bold;
             text-decoration: none;
@@ -441,7 +441,7 @@ div#title {
     position: absolute;
     display: block;
     width: 300px;
-    top: 348px;
+    top: 302px;
     left: 680px;
     background-color: #eee;
     border: 1px solid #e0e0e0;

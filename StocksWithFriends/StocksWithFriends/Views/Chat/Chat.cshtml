@@ -2,25 +2,27 @@
   <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
   <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 <script type="text/javascript" src="/Resources/uploadify/jquery.uploadify.min.js"></script>
-<link rel="stylesheet" href="/Content/DialogFormat.css" />
+<link href='http://fonts.googleapis.com/css?family=Jura' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="/Content/Chat.css" />
 ﻿@if (Request.IsAuthenticated)
 {
-<h2>Chat</h2>
-
-<label for="msg" >Message</label>
-<input id="msg"  />
-<br />
-<button id="btn" >Post</button>
-<br />
-<div id="container" style="position:relative;">
-    <div id="message_area" style="float:left;position:relative;">
-        <h2> Current Chat</h2>
+     <div id="messageContainer">
+    <div id="chatHistoryContainer">
+        <button id="historyButton" title="Chat History" style="float: left;position: relative; height:60px; width: 60px" />       
+        <h2>Chat</h2>
     </div>
-    <div id="chatHistory" style="float:left;position:relative;margin-left:150px;">
-        <button id="loadHistory">Load History</button>
-        <h2> Chat History</h2>
+    <div id="messageArea">
+    </div>
+    <div id="messageInput" class="ui-corner-all">
+        <div id="messageBlock">
+            <input class="input.ui-button" id="msg" placeholder="Enter a message..." />
+        </div>
+        <div id="sendButton">
+            <button id="btn" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-state-hover" role="button" aria-disabled="false"><span class="ui-button-text">Send</span></button>
+        </div>
     </div>
 </div>
+
 
 <script>
     var agreed = false; //has to be global
@@ -32,10 +34,15 @@
             width:700,
             autoOpen: false,
         });
+        $("#historyButton").button({
 
+            icons: { primary: null },
+            text: false
+
+        }).addClass("ButtonClass");
     });
 
-    $('#loadHistory').click(function (e) {
+    $('#historyButton').click(function (e) {
         $.ajax({
             url: '/Chat/GetChatHistory',
             data: { userName: fbName },
@@ -67,7 +74,7 @@
     });
 
     function displayMessage(msg) {
-        $('#message_area').append('<br />'+msg);
+        $('#messageArea').append('<br />' + msg);
          }
       
      var WebSocket = WebSocket || MozWebSocket;
@@ -112,7 +119,7 @@
 
 </script>
     <div id="chatContainer">
-        <div id="something"><div id="historyArea"></div></div>
+        <div id="something" title="Chat History"><div id="historyArea"></div></div>
         </div>
 
 }
