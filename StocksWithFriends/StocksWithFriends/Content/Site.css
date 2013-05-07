@@ -437,5 +437,31 @@ div#title {
     left: 580px;
 }
 
+#welcome-home-events {
+    position: absolute;
+    display: block;
+    width: 300px;
+    top: 348px;
+    left: 680px;
+    background-color: #eee;
+    border: 1px solid #e0e0e0;
+    padding: 20px;
+}
 
+    #welcome-home-events ul {
+        list-style-type: none;
+    }
 
+.calendar-remove {
+    float: right;
+    margin-right: 5px;
+    color: #e0e0e0;
+}
+
+.calendar-remove:hover {
+    color: #f0f0f0;
+}
+
+    .calendar-remove:active {
+        color: #fff;
+    }

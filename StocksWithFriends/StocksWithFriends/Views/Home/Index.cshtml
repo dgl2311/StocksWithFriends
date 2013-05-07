@@ -3,6 +3,7 @@
 }
 
 <h2>@ViewBag.Message</h2>
+@{ Html.RenderAction("Home", "Calender"); }
 @{ Html.RenderAction("Ticker", "Stock"); }
 <p>
     @{ Html.RenderAction("Home", "Facebook"); }

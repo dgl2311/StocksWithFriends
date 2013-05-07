@@ -1,0 +1,77 @@
+﻿﻿@if (Request.IsAuthenticated)
+{
+    <script>
+        $(document).ready(function () {
+
+            // page is now ready, initialize the calendar...
+
+            $.ajax({
+                url: 'Calender/GetEventsForToday',
+                success: function (data) {
+                    var events = [];
+
+                    for (var i = 0; i < data.length; i++) {
+                        events.push({
+                            title: data[i].event_name,
+                            start: data[i].start_string,
+                            end: data[i].end_string,
+                            allDay: data[i].all_day
+                        });
+                    }
+
+                    displayEvents(events);
+                },
+                error: function () {
+
+                }
+            });
+        });
+
+        function displayEvents(events) {
+            var html = "";
+            html += "<h2>Today's Events:</h2>";
+
+            if (events.length == 0) {
+                html += "No events today.";
+            } else {
+                html += "<ul>";
+                
+                for (var i = 0; i < events.length; i++) {
+                    html += "<li>";
+
+                    if (events[i].allDay) {
+                        html += "(All Day)";
+                    } else {
+                        var startString = events[i].start.split(" ")[1];
+                        var hour = parseInt(startString.split(":")[0]);
+                        var minute = parseInt(startString.split(":")[1]);
+                        var am = (hour < 12);
+
+                        if (hour > 12) {
+                            hour -= 12;
+                        } else if (hour === 0) {
+                            hour = 12;
+                        }
+
+                        var minuteString = (minute < 10 ? "0" : "") + minute.toString();
+                         
+                        html += (hour.toString() + ":" + minuteString + " " + (am ? "AM" : "PM"));
+                    }
+
+                    html += " - ";
+                    html += events[i].title;
+
+                    html += "</li>";
+                }
+
+                html += "</ul>";
+            }
+
+            document.getElementById("welcome-home-events").innerHTML = html;
+        }
+    </script>
+    
+    <div id="welcome-home-events">
+
+    </div>
+}

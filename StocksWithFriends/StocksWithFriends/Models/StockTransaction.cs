@@ -15,7 +15,7 @@ namespace StocksWithFriends.Models
     public partial class StockTransaction
     {
         public int id { get; set; }
-        public long user_id { get; set; }
+        public string user_id { get; set; }
         public System.DateTime timestamp { get; set; }
         public string stock_symbol { get; set; }
         public int tx_quantity_delta { get; set; }

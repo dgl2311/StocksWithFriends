@@ -1,4 +1,4 @@
-﻿﻿@if (Request.IsAuthenticated)
+﻿@if (Request.IsAuthenticated)
 {
     <div class="ui-widget fb-post-bar" id="fb-post-to-friends-bar">
         @{Html.RenderAction("UpdateStatus", "Facebook");}
@@ -11,5 +11,4 @@
     Html.RenderAction("PostToFriendsWall", "Facebook");
     <br />
     Html.RenderAction("NewsFeed","Facebook");
-
 }

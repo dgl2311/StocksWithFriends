@@ -9,7 +9,6 @@ using System.Web.UI.WebControls;
 
 namespace StocksWithFriends.Controllers
 {
-    [FacebookAuthorize]
     public class CalenderController : Controller
     {
         DBEntities _db;
@@ -17,6 +16,14 @@ namespace StocksWithFriends.Controllers
         public CalenderController()
         {
             _db = new DBEntities();
+        }
+
+        //
+        // GET: /Calender/Home
+
+        public ActionResult Home()
+        {
+            return PartialView();
         }
 
         //
@@ -36,7 +43,7 @@ namespace StocksWithFriends.Controllers
             calendarEvent.event_description = description;
             calendarEvent.start_timestamp = new System.DateTime(startYear, startMonth, startDay, startHour, startMinute, startSecond);
             calendarEvent.end_timestamp = new System.DateTime(endYear, endMonth, endDay, endHour, endMinute, endSecond);
-            calendarEvent.user_id = Convert.ToInt64(Session["userId"]);
+            calendarEvent.user_id = (string)Session["userId"];
             calendarEvent.id = 0;
 
             if (_db.CalendarEvents.Count() > 0)
@@ -50,15 +57,104 @@ namespace StocksWithFriends.Controllers
             return RedirectToAction("Index", "Calender");
         }
 
+        public ActionResult UpdateEvent(string name, string description, int startYear, int startMonth, int startDay,
+            int startHour, int startMinute, int startSecond, int endYear, int endMonth, int endDay, int endHour,
+            int endMinute, int endSecond, int id)
+        {
+            var eventQuery = from e in _db.CalendarEvents
+                             where e.id == id
+                             select e;
+
+            CalendarEvent[] events = eventQuery.ToList().ToArray();
+
+            if (events.Count() == 0)
+            {
+                return RedirectToAction("Index", "Calender");
+            }
+
+            CalendarEvent calendarEvent = events[0];
+
+            _db.CalendarEvents.Remove(calendarEvent);
+            _db.SaveChanges();
+
+            calendarEvent.event_name = name;
+            calendarEvent.event_description = description;
+            calendarEvent.start_timestamp = new System.DateTime(startYear, startMonth, startDay, startHour, startMinute, startSecond);
+            calendarEvent.end_timestamp = new System.DateTime(endYear, endMonth, endDay, endHour, endMinute, endSecond);
+            calendarEvent.user_id = (string)Session["userId"];
+            calendarEvent.id = id;
+
+            _db.CalendarEvents.Add(calendarEvent);
+            _db.SaveChanges();
+
+            return RedirectToAction("Index", "Calender");
+        }
+
+        public ActionResult DeleteEvent(int id)
+        {
+            var eventQuery = from e in _db.CalendarEvents
+                        where e.id == id
+                        select e;
+
+            CalendarEvent[] events = eventQuery.ToList().ToArray();
+            foreach (CalendarEvent matchedEvent in events)
+            {
+                _db.CalendarEvents.Remove(matchedEvent);
+            }
+
+            _db.SaveChanges();
+
+            return RedirectToAction("Index", "Calender");
+        }
+
+        public JsonResult GetEventDescription(int id)
+        {
+            // XXX: Unknown error thrown when run on a newly edited event.
+            var eventQuery = from e in _db.CalendarEvents
+                             where e.id == id
+                             select e;
+
+            CalendarEvent[] events = eventQuery.ToList().ToArray();
+            foreach (CalendarEvent matchedEvent in events)
+            {
+                return Json(matchedEvent.event_description, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult GetEvents()
         {
             List<JsonCalendarEvent> jsonEvents = new List<JsonCalendarEvent>();
 
             foreach (CalendarEvent e in _db.CalendarEvents.ToList())
             {
-                if (e.user_id == Convert.ToInt64(Session["userId"]))
+                if (e.user_id.Equals(Session["userId"]))
                 {
                     jsonEvents.Add(new JsonCalendarEvent(e));
+                }
+            }
+
+            return Json(jsonEvents, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetEventsForToday()
+        {
+            List<JsonCalendarEvent> jsonEvents = new List<JsonCalendarEvent>();
+            List<CalendarEvent> events = _db.CalendarEvents.ToList();
+            events.Sort((x, y) => DateTime.Compare(x.start_timestamp, y.start_timestamp));
+
+            foreach (CalendarEvent e in events)
+            {
+                if (e.user_id.Equals(Session["userId"]))
+                {
+                    System.DateTime now = System.DateTime.Now;
+
+                    if (e.start_timestamp.Date.CompareTo(now.Date) == 0 ||
+                        (e.start_timestamp.Date.CompareTo(now.Date) <= 0 &&
+                         e.end_timestamp.Date.CompareTo(now.Date) >= 0)) {
+                        jsonEvents.Add(new JsonCalendarEvent(e));
+                    }                    
                 }
             }
 
@@ -86,7 +182,7 @@ namespace StocksWithFriends.Controllers
         }
 
         public int id { get; set; }
-        public long user_id { get; set; }
+        public string user_id { get; set; }
         public string event_name { get; set; }
         public string event_description { get; set; }
         public string start_string { get; set; }

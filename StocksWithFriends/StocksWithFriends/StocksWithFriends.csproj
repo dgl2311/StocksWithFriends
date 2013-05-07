@@ -120,23 +120,8 @@
     <Compile Include="Models\CalendarEvent.cs">
       <DependentUpon>DBEntityItem.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ChatLog.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ChatLog.Context.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\ChatLog.cs">
       <DependentUpon>DBEntityItem.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ChatLog.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ChatLog.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ChatLog1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ChatLog.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DBEntityItem.Context.cs">
       <AutoGen>True</AutoGen>
@@ -166,6 +151,7 @@
     <Content Include="Content\Feed.css" />
     <Content Include="Content\fullcalendar.css" />
     <Content Include="Content\fullcalendar.print.css" />
+    <Content Include="Content\DialogFormat.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -222,23 +208,6 @@
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Content\Welcome.css" />
     <Content Include="Global.asax" />
-    <EntityDeploy Include="Models\ChatLog.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ChatLog.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\ChatLog.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ChatLog.edmx</DependentUpon>
-      <LastGenOutput>ChatLog.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\ChatLog.edmx.diagram">
-      <DependentUpon>ChatLog.edmx</DependentUpon>
-    </Content>
-    <Content Include="Models\ChatLog.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ChatLog.edmx</DependentUpon>
-      <LastGenOutput>ChatLog1.cs</LastGenOutput>
-    </Content>
     <EntityDeploy Include="Models\DBEntityItem.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>DBEntityItem.Designer.cs</LastGenOutput>
@@ -334,6 +303,7 @@
     <Content Include="Views\Stock\LookUp.cshtml" />
     <Content Include="Views\Chat\Chat.cshtml" />
     <Content Include="Views\Home\Welcome.cshtml" />
+    <Content Include="Views\Calender\Home.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
