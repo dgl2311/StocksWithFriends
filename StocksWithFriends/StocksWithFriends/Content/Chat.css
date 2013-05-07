@@ -1,6 +1,13 @@
-﻿h2 {
-    font-family: 'Jura', sans-serif;
-    color:white;
+﻿#chatHistoryContainer h2 {
+    font-family: "Sintony", "Trebuchet MS", Verdana, Helvetica, Sans-Serif;
+    color: #fff;
+    margin-bottom: 15px;
+    left: 190px;
+    position: absolute;
+    top: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
 #messageContainer {
     position:fixed;
@@ -15,36 +22,37 @@
     height:50px;
     float:none;
     padding-bottom: 10px;
-    background-color: black;
+    background-color: #A8A9AD;
 }
 #messageArea {
     width: 400px;
-    height: 200px;
-    border: 4px inset grey;
-      background-color: #C0C0C0;
-      overflow:auto;
+    height: 220px;
+    border: 4px inset #A8A9AD;
+    background-color: #f0f0f0;
+    overflow:auto;
 }
 #messageInput {
-    padding-top: 10px;
     position: absolute;
     bottom:0px;
     float:none;
     width: 400px;
-    height:50px;
-    border-top: 4px solid black;
+    height: 40px;
+    border-top: 4px solid #696969;
       background-color: #8FBAC8;
 }
 #messageBlock {
     position:relative;
     float: left;
-    height:100px;
 }
 #msg {
     color: #2E6E9E;
     font-weight: bold;
     border: 1px solid #C5DBEC;
     padding: 5px;
-    border-radius: 5px;
+    width: 300px;
+    height: 20px;
+    margin-left: 5px;
+    margin-top: 3px;
 }
 .ButtonClass
 {
@@ -54,7 +62,6 @@
 }
 #sendButton {
     position: relative;
-
     float:left;
     height:100px;
 }
