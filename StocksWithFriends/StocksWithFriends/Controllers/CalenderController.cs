@@ -1,4 +1,5 @@
-﻿using StocksWithFriends.Models;
+﻿using StocksWithFriends.Attributes;
+using StocksWithFriends.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Web.UI.WebControls;
 
 namespace StocksWithFriends.Controllers
 {
+    [FacebookAuthorize]
     public class CalenderController : Controller
     {
         DBEntities _db;
@@ -34,7 +36,7 @@ namespace StocksWithFriends.Controllers
             calendarEvent.event_description = description;
             calendarEvent.start_timestamp = new System.DateTime(startYear, startMonth, startDay, startHour, startMinute, startSecond);
             calendarEvent.end_timestamp = new System.DateTime(endYear, endMonth, endDay, endHour, endMinute, endSecond);
-            calendarEvent.user_id = 0;
+            calendarEvent.user_id = Convert.ToInt64(Session["userId"]);
             calendarEvent.id = 0;
 
             if (_db.CalendarEvents.Count() > 0)
@@ -54,7 +56,10 @@ namespace StocksWithFriends.Controllers
 
             foreach (CalendarEvent e in _db.CalendarEvents.ToList())
             {
-                jsonEvents.Add(new JsonCalendarEvent(e));
+                if (e.user_id == Convert.ToInt64(Session["userId"]))
+                {
+                    jsonEvents.Add(new JsonCalendarEvent(e));
+                }
             }
 
             return Json(jsonEvents, JsonRequestBehavior.AllowGet);
@@ -70,18 +75,18 @@ namespace StocksWithFriends.Controllers
             user_id = calendarEvent.user_id;
             event_name = calendarEvent.event_name;
             event_description = calendarEvent.event_description;
-            start_string = calendarEvent.start_timestamp.Value.ToString("yyyy-MM-dd HH:mm:00");
-            end_string = calendarEvent.end_timestamp.Value.ToString("yyyy-MM-dd HH:mm:00");
+            start_string = calendarEvent.start_timestamp.ToString("yyyy-MM-dd HH:mm:00");
+            end_string = calendarEvent.end_timestamp.ToString("yyyy-MM-dd HH:mm:00");
 
-            System.DateTime eventStart = calendarEvent.start_timestamp.Value;
-            System.DateTime eventEnd = calendarEvent.end_timestamp.Value;
+            System.DateTime eventStart = calendarEvent.start_timestamp;
+            System.DateTime eventEnd = calendarEvent.end_timestamp;
             Boolean start = (eventStart.Hour == 0 && eventStart.Minute == 0);
             Boolean end = (eventEnd.Hour == 23 && eventEnd.Minute == 59);
             all_day = (start && end);
         }
 
         public int id { get; set; }
-        public int user_id { get; set; }
+        public long user_id { get; set; }
         public string event_name { get; set; }
         public string event_description { get; set; }
         public string start_string { get; set; }

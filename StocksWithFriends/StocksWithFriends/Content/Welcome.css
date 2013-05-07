@@ -1,0 +1,51 @@
+﻿#header {
+    display: none;
+}
+
+#welcome_header {
+    display: block;
+    position: relative;
+    top: -230px;
+}
+
+#main {
+    display: block;
+    margin-top: 180px;
+    border-radius: 0px;
+    -webkit-border-radius: 0px;
+    height: 150px;
+}
+
+#welcome_logo {
+    box-shadow: 0 3px 2px -2px #a0a0a0;
+}
+
+#footer {
+    border-radius: 0px;
+    -webkit-border-radius: 0px;
+}
+
+#welcome_logindisplay {
+    display: block;
+    position: absolute;
+    top: 215px;
+    left: 690px;
+}
+
+#welcome_content_left {
+    display: block;
+    position: absolute;
+    top: 290px;
+    margin-left: 20px;
+}
+
+    #welcome_content_left p {
+        font-style: italic;
+    }
+
+#welcome_content_right {
+    display: block;
+    position: absolute;
+    top: 290px;
+    left: 690px;
+}

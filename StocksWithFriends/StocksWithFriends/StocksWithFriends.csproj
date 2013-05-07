@@ -45,8 +45,7 @@
     <Reference Include="Facebook">
       <HintPath>..\packages\Facebook.6.4.0\lib\net40-client\Facebook.dll</HintPath>
     </Reference>
-    <Reference Include="Fleck, Version=0.9.6.19, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Fleck">
       <HintPath>..\packages\Fleck.0.9.6.19\lib\net40\Fleck.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -107,6 +106,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\FacebookAuthorizeAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CalenderController.cs" />
     <Compile Include="Controllers\ChatController.cs" />
@@ -126,7 +126,7 @@
       <DependentUpon>ChatLog.Context.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ChatLog.cs">
-      <DependentUpon>ChatLog.tt</DependentUpon>
+      <DependentUpon>DBEntityItem.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ChatLog.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -154,6 +154,12 @@
       <DependentUpon>DBEntityItem.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\NewsFeedItem.cs" />
+    <Compile Include="Models\StockNote.cs">
+      <DependentUpon>DBEntityItem.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StockTransaction.cs">
+      <DependentUpon>DBEntityItem.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -215,24 +221,8 @@
     <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="Content\Welcome.css" />
     <Content Include="Global.asax" />
-    <EntityDeploy Include="Models\DBEntityItem.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DBEntityItem.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\DBEntityItem.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DBEntityItem.edmx</DependentUpon>
-      <LastGenOutput>DBEntityItem.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\DBEntityItem.edmx.diagram">
-      <DependentUpon>DBEntityItem.edmx</DependentUpon>
-    </Content>
-    <Content Include="Models\DBEntityItem.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DBEntityItem.edmx</DependentUpon>
-      <LastGenOutput>DBEntityItem.cs</LastGenOutput>
-    </Content>
     <EntityDeploy Include="Models\ChatLog.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>ChatLog.Designer.cs</LastGenOutput>
@@ -249,6 +239,23 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ChatLog.edmx</DependentUpon>
       <LastGenOutput>ChatLog1.cs</LastGenOutput>
+    </Content>
+    <EntityDeploy Include="Models\DBEntityItem.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DBEntityItem.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\DBEntityItem.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DBEntityItem.edmx</DependentUpon>
+      <LastGenOutput>DBEntityItem.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\DBEntityItem.edmx.diagram">
+      <DependentUpon>DBEntityItem.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\DBEntityItem.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DBEntityItem.edmx</DependentUpon>
+      <LastGenOutput>DBEntityItem.cs</LastGenOutput>
     </Content>
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\Profile.pubxml" />
@@ -269,6 +276,10 @@
     <Content Include="Scripts\gcal.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
+    <None Include="Scripts\jquery-2.0.0.intellisense.js" />
+    <Content Include="Scripts\jquery-2.0.0.js" />
+    <Content Include="Scripts\jquery-2.0.0.min.js" />
+    <Content Include="Scripts\jquery-2.0.0.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\jquery-ui-1.10.2.custom.min.js" />
@@ -323,6 +334,7 @@
     <Content Include="Views\Facebook\NewsFeed.cshtml" />
     <Content Include="Views\Stock\LookUp.cshtml" />
     <Content Include="Views\Chat\Chat.cshtml" />
+    <Content Include="Views\Home\Welcome.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

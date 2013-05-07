@@ -15,10 +15,10 @@ namespace StocksWithFriends.Models
     public partial class CalendarEvent
     {
         public int id { get; set; }
-        public int user_id { get; set; }
+        public long user_id { get; set; }
         public string event_name { get; set; }
         public string event_description { get; set; }
-        public Nullable<System.DateTime> start_timestamp { get; set; }
-        public Nullable<System.DateTime> end_timestamp { get; set; }
+        public System.DateTime start_timestamp { get; set; }
+        public System.DateTime end_timestamp { get; set; }
     }
 }
