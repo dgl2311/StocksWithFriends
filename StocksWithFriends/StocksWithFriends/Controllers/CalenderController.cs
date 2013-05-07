@@ -57,6 +57,39 @@ namespace StocksWithFriends.Controllers
             return RedirectToAction("Index", "Calender");
         }
 
+        public ActionResult UpdateEvent(string name, string description, int startYear, int startMonth, int startDay,
+            int startHour, int startMinute, int startSecond, int endYear, int endMonth, int endDay, int endHour,
+            int endMinute, int endSecond, int id)
+        {
+            var eventQuery = from e in _db.CalendarEvents
+                             where e.id == id
+                             select e;
+
+            CalendarEvent[] events = eventQuery.ToList().ToArray();
+
+            if (events.Count() == 0)
+            {
+                return RedirectToAction("Index", "Calender");
+            }
+
+            CalendarEvent calendarEvent = events[0];
+
+            _db.CalendarEvents.Remove(calendarEvent);
+            _db.SaveChanges();
+
+            calendarEvent.event_name = name;
+            calendarEvent.event_description = description;
+            calendarEvent.start_timestamp = new System.DateTime(startYear, startMonth, startDay, startHour, startMinute, startSecond);
+            calendarEvent.end_timestamp = new System.DateTime(endYear, endMonth, endDay, endHour, endMinute, endSecond);
+            calendarEvent.user_id = (string)Session["userId"];
+            calendarEvent.id = id;
+
+            _db.CalendarEvents.Add(calendarEvent);
+            _db.SaveChanges();
+
+            return RedirectToAction("Index", "Calender");
+        }
+
         public ActionResult DeleteEvent(int id)
         {
             var eventQuery = from e in _db.CalendarEvents
@@ -72,6 +105,22 @@ namespace StocksWithFriends.Controllers
             _db.SaveChanges();
 
             return RedirectToAction("Index", "Calender");
+        }
+
+        public JsonResult GetEventDescription(int id)
+        {
+            // XXX: Unknown error thrown when run on a newly edited event.
+            var eventQuery = from e in _db.CalendarEvents
+                             where e.id == id
+                             select e;
+
+            CalendarEvent[] events = eventQuery.ToList().ToArray();
+            foreach (CalendarEvent matchedEvent in events)
+            {
+                return Json(matchedEvent.event_description, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json("", JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult GetEvents()

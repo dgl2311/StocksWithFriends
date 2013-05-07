@@ -452,5 +452,16 @@ div#title {
         list-style-type: none;
     }
 
+.calendar-remove {
+    float: right;
+    margin-right: 5px;
+    color: #e0e0e0;
+}
 
+.calendar-remove:hover {
+    color: #f0f0f0;
+}
 
+    .calendar-remove:active {
+        color: #fff;
+    }
